@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Муниципальные ГИС — ЭРМА СОФТ Менеджмент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ermasoft-inner.css">
+
+</head>
+<body>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+<div id="nav-placeholder"></div>
+
+<nav class="breadcrumb"><div class="wrap"><a href='/'>Главная</a><span class="sep">›</span><span class="cur">Муниципальные ГИС</span></div></nav>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="page-hero-inner fi in">
+      <div class="ph-lbl">ГеоАРМ / ЭРМА СОФТ</div>
+      <h1>Муниципальные ГИС</h1>
+      <p>Многопользовательские геоприложения для органов местного самоуправления — единое информационное пространство территории.</p>
+      <div class="ph-btns">
+        <button type="button" onclick="openContactModal()" class="btn btn-primary">Запросить демо</button>
+        <button type="button" onclick="openContactModal()" class="btn" style="background:rgba(255,255,255,.1);color:white;border-color:rgba(255,255,255,.35)">Задать вопрос</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-body">
+  <div class="wrap">
+    <div class="page-layout">
+      <aside class="sidebar fi">
+        <div class="sb-section-title">Муниципальные ГИС</div>
+        <nav class="sb-nav">
+<a href="#geoarm" class="sb-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>Реализованные ГеоАРМ</a>
+<a href="#analytics" class="sb-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>Аналитические возможности</a>
+
+        </nav>
+        <a href="None" class="sb-back"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>← Муниципальные ГИС</a>
+        <div class="sb-cta">
+          <h4>Нужна консультация?</h4>
+          <p>Специалист ответит на любые вопросы о системе</p>
+          <button type="button" onclick="openContactModal()" class="btn btn-primary" style="width:100%;justify-content:center;font-size:12px;padding:8px">Написать нам</button>
+        </div>
+      </aside>
+      <main class="content">
+
+        <section class="content-section fi" id="geoarm">
+          <h2 class="cs-h2">Реализованные ГеоАРМ</h2>
+          <div class="cs-cols">
+            <div>
+              <p class="cs-p">Многопользовательское геоприложение с группами <strong>ГеоАРМ</strong> объединяет пользователей на разных уровнях доступа и обеспечивает единое информационное пространство для органов власти.</p>
+              <p class="cs-p">Система объединяет:</p>
+              <div class="feat-list">
+                <div class="feat-item"><div class="feat-dot"></div><p>Группы ГеоАРМ <strong>в сети Префектуры</strong></p></div>
+                <div class="feat-item"><div class="feat-dot"></div><p>Группы ГеоАРМ <strong>у удалённых пользователей</strong></p></div>
+                <div class="feat-item"><div class="feat-dot"></div><p>Группы ГеоАРМ <strong>в сети Интернет</strong></p></div>
+                <div class="feat-item"><div class="feat-dot"></div><p><strong>Обслуживающие ГеоАРМ</strong> для администраторов</p></div>
+              </div>
+            </div>
+            <div class="cs-img fi d1">
+              <img src="https://images.unsplash.com/photo-1495542779398-9fec7dc7986c?auto=format&fit=crop&w=700&q=80" alt="Муниципальные ГИС" loading="lazy">
+            </div>
+          </div>
+          <h3 class="cs-h3">Состав ГеоАРМ</h3>
+          <div class="subsys-grid">
+            <div class="subsys-card"><div class="subsys-card-title">Картографическая основа</div><ul><li>Топографические карты</li><li>Адресные данные</li><li>Слои инфраструктуры</li></ul></div>
+            <div class="subsys-card"><div class="subsys-card-title">Тематические данные</div><ul><li>Социально-значимые данные</li><li>Данные об объектах</li><li>Аналитические слои</li></ul></div>
+          </div>
+          <div class="tech-block"><h4>Реализованные объекты</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Зеленоградский АО г. Москвы</span><span class="tech-tag">Префектуры</span>
+              <span class="tech-tag">Муниципальные образования</span><span class="tech-tag">Web-ГИС</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section fi" id="analytics">
+          <h2 class="cs-h2">Аналитические возможности</h2>
+          <p class="cs-p">Система обеспечивает поддержку <strong>административно-управленческих решений</strong> на основе геоинформационного анализа данных.</p>
+          <div class="feat-list">
+            <div class="feat-item"><div class="feat-dot"></div><p>Отображение и анализ данных с <strong>временно́м и пространственным распределением</strong></p></div>
+            <div class="feat-item"><div class="feat-dot"></div><p>Визуализация социально-значимых данных, отражающих качество жизни жителей</p></div>
+            <div class="feat-item"><div class="feat-dot"></div><p>Тематические многоцветные карты для поддержки управленческих решений</p></div>
+            <div class="feat-item"><div class="feat-dot"></div><p>Голосование жителей на интерактивной карте (реализовано в Зеленограде)</p></div>
+            <div class="feat-item"><div class="feat-dot"></div><p>Подготовка аналитических отчётов и выгрузка данных</p></div>
+          </div>
+          <p class="cs-p" style="margin-top:16px">Реализованный пример: <strong>zelao.ermasoft.ru</strong> — ежегодное голосование жителей Зеленограда за лучших работников комплексной уборки на интерактивной карте города.</p>
+        </section>
+        <div class="content-cta fi">
+          <div><h3>Вопрос специалисту ЭРМА СОФТ</h3><p>Расскажите о задаче — подготовим демонстрацию и коммерческое предложение за 3 рабочих дня</p></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="mailto:erma@ermasoft.ru" class="btn btn-white" style="font-size:13px">erma@ermasoft.ru</a>
+            <a href="tel:+74959680280" class="btn" style="background:rgba(255,255,255,.1);color:white;border-color:rgba(255,255,255,.35);font-size:13px">+7 (495) 968-02-80</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Auto-activate sidebar link based on hash
+  function activateFromHash() {
+    const hash = window.location.hash;
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    if (hash) {
+      const link = document.querySelector('.sb-link[href="' + hash + '"]');
+      if (link) link.classList.add('active');
+      const target = document.querySelector(hash);
+      if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    } else {
+      const first = document.querySelector('.sb-link');
+      if (first) first.classList.add('active');
+    }
+  }
+  activateFromHash();
+  window.addEventListener('hashchange', activateFromHash);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Аналитические возможности — ЭРМА СОФТ Менеджмент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ermasoft-inner.css">
+</head>
+<body>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+<div id="nav-placeholder"></div>
+<nav class="breadcrumb"><div class="wrap"><a href='/'>Главная</a><span class="sep">›</span><a href='/municipal'>Муниципальные ГИС</a><span class="sep">›</span><span class="cur">Аналитические возможности</span></div></nav>
+<section class="page-hero">
+  <div class="wrap">
+    <div class="page-hero-inner fi in">
+      <div class="ph-lbl">ГеоАРМ / ЭРМА СОФТ</div>
+      <h1>Аналитические возможности</h1>
+      <p>Анализ данных с временным и пространственным распределением для поддержки управленческих решений.</p>
+      <div class="ph-btns">
+        <button type="button" onclick="openContactModal()" class="btn btn-primary">Запросить демо</button>
+        <button type="button" onclick="openContactModal()" class="btn" style="background:rgba(255,255,255,.1);color:white;border-color:rgba(255,255,255,.35)">Задать вопрос</button>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="page-body">
+  <div class="wrap">
+    <div class="page-layout">
+      <aside class="sidebar fi"><div class="sb-section-title">ГеоАРМ / ЭРМА СОФТ</div><nav class="sb-nav"><a class='sb-link' href='/municipal-geoarm'><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5"><path d='M5 12h14M13 5l7 7-7 7'/></svg>Реализованные ГеоАРМ</a>
+<a class='sb-link' href='/municipal-analytics'><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5"><path d='M5 12h14M13 5l7 7-7 7'/></svg>Аналитические возможности</a>
+<a class='sb-back' href='/municipal'><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5"><path d='M19 12H5M12 5l-7 7 7 7'/></svg>← Муниципальные ГИС</a>
+    <div class="sb-cta">
+      <h4>Нужна консультация?</h4>
+      <p>Специалист ответит на ваши вопросы о системе</p>
+      <button type="button" onclick="openContactModal()" class="btn btn-primary" style="width:100%;justify-content:center;font-size:12px;padding:8px;display:flex">Написать нам</button>
+    </div></nav></aside>
+      <main class="content">
+<section class="content-section fi" id="main"><h2 class="cs-h2">Аналитические возможности</h2><div class="cs-cols" style="margin:16px 0"><div><p class="cs-p">В муниципальную ГИС встроены средства, позволяющие готовить и выполнять <strong>параметрические запросы к БД</strong> с отображением результатов на картографической основе.</p><p class="cs-p">При выполнении параметрических запросов пользователь имеет возможность задавать параметры непосредственно перед выполнением стандартных запросов.</p><div class="feat-list"><div class="feat-item"><div class="feat-dot"></div><p>Получение результатов анализа в виде стандартного документа <strong>MS Excel</strong></p></div><div class="feat-item"><div class="feat-dot"></div><p>Построение запросов для анализа неравномерно территориально распределённых данных</p></div><div class="feat-item"><div class="feat-dot"></div><p>Формирование растрового изображения «синтезированной заливки» — тепловые карты</p></div><div class="feat-item"><div class="feat-dot"></div><p>Пользователи могут перемещать и масштабировать изображение вместе с картографической основой</p></div><div class="feat-item"><div class="feat-dot"></div><p>При изменении параметров создаётся новое изображение, отражающее актуальный анализ</p></div></div></div><div class="cs-img fi d1"><img src="images/scr-mun-analytics.png" alt="Аналитика муниципальных данных" loading="lazy"></div></div></section>
+        <div class="content-cta fi">
+          <div><h3>Вопрос специалисту ЭРМА СОФТ</h3>
+          <p>Расскажите о задаче — подготовим демонстрацию и предложение за 3 рабочих дня</p></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="mailto:erma@ermasoft.ru" class="btn btn-white" style="font-size:13px">erma@ermasoft.ru</a>
+            <a href="tel:+74959680280" class="btn" style="background:rgba(255,255,255,.1);color:white;border-color:rgba(255,255,255,.35);font-size:13px">+7 (495) 968-02-80</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {{
+  // Auto-activate the correct sidebar link
+  var page = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.sb-link').forEach(function(l) {{
+    var href = l.getAttribute('href') || '';
+    if (href === page || href.split('/').pop() === page) {{
+      l.classList.add('active');
+    }}
+  }});
+  if (!document.querySelector('.sb-link.active')) {{
+    var first = document.querySelector('.sb-link');
+    if (first) first.classList.add('active');
+  }}
+}});
+</script>
+</body>
+</html>
