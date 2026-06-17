@@ -72,7 +72,7 @@ ul{list-style:none}
 .hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hbg.open span:nth-child(2){opacity:0}
 .hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mob-nav{display:none;position:fixed;left:0;right:0;background:var(--white);border-bottom:1px solid var(--line);box-shadow:var(--sh-l);padding:12px 20px 20px;z-index:299}
+.mob-nav{position:fixed;left:0;right:0;background:var(--white);border-bottom:1px solid var(--line);box-shadow:var(--sh-l);padding:12px 20px 20px;z-index:299}
 .mob-nav a{display:block;padding:11px 12px;font-size:14px;font-weight:600;border-radius:var(--r);transition:.13s;color:var(--ink2)}
 .mob-nav a:hover{background:var(--cool);color:var(--brand)}
 
@@ -130,7 +130,7 @@ ul{list-style:none}
 
 /* Feature list */
 .feat-list{display:flex;flex-direction:column;gap:9px;margin:14px 0}
-.feat-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--cool);border:1px solid var(--line);border-radius:var(--r);transition:.15s}
+.feat-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--cool);border:1px solid var(--line);border-radius:var(--r);transition:.15s;position:relative;overflow:hidden}
 .feat-item:hover{border-color:var(--brand-l);background:rgba(14,92,139,.04)}
 .feat-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px}
 .feat-item p{font-size:13.5px;color:var(--ink2);line-height:1.55}
@@ -152,7 +152,7 @@ ul{list-style:none}
 
 /* Subsystem grid */
 .subsys-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:16px 0}
-.subsys-card{background:var(--cool);border:1px solid var(--line);border-radius:var(--rl);padding:18px 20px;transition:.2s}
+.subsys-card{background:var(--cool);border:1px solid var(--line);border-radius:var(--rl);padding:18px 20px;transition:.2s;position:relative;overflow:hidden}
 .subsys-card:hover{border-color:var(--brand-l);box-shadow:var(--sh-s);transform:translateY(-2px)}
 .subsys-card-num{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
 .subsys-card-title{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:8px}

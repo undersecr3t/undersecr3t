@@ -30,7 +30,50 @@
 html{scroll-padding-top:120px}
 
 /* ══ BODY background subtle gradient ══ */
-body{background:#FAFBFC;min-height:100vh}
+body{background:#FAFBFC;min-height:100vh;animation:pageEnter .45s ease both}
+@keyframes pageEnter{from{opacity:0}to{opacity:1}}
+
+/* ══ SCROLL PROGRESS BAR ══ */
+#scroll-progress{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:var(--grad-brand);z-index:3000;
+  box-shadow:0 0 10px rgba(43,168,201,.6);
+  transition:width .1s linear;
+}
+
+/* ══ AURORA DRIFT — living gradient backgrounds ══ */
+@keyframes auroraDrift{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(3%,-3%) scale(1.1)}
+  100%{transform:translate(0,0) scale(1)}
+}
+.hero::before, .page-hero::before, .cta::before, .cta::after,
+.content-cta::before, .sb-cta::before, .why::before, .stats-strip::before{
+  animation:auroraDrift 16s ease-in-out infinite;
+}
+
+/* ══ MOBILE NAV — smooth slide/fade ══ */
+.mob-nav{
+  display:block;
+  opacity:0;visibility:hidden;transform:translateY(-10px);
+  transition:opacity .25s var(--tr), transform .25s var(--tr), visibility .25s;
+  pointer-events:none;
+}
+.mob-nav.open{
+  opacity:1;visibility:visible;transform:translateY(0);
+  pointer-events:auto;
+}
+
+/* ══ CARD SPOTLIGHT GLOW — cursor-tracking highlight ══ */
+.pc, .sol-card, .ind-card, .feat-item, .subsys-card{--mx:50%;--my:50%}
+.pc::after, .sol-card::before, .ind-card::before, .feat-item::before, .subsys-card::before{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(circle 200px at var(--mx) var(--my), rgba(43,168,201,.14), transparent 70%);
+  opacity:0;transition:opacity .3s var(--tr);
+}
+.pc:hover::after, .sol-card:hover::before, .ind-card:hover::before,
+.feat-item:hover::before, .subsys-card:hover::before{opacity:1}
 
 /* ═══════════════════════════════════════
    NAVIGATION — GLASS BLUR PREMIUM
@@ -114,7 +157,7 @@ body{background:#FAFBFC;min-height:100vh}
 /* Stats bar upgrade */
 .hstat{position:relative;transition:transform .3s var(--tr-bounce)}
 .hstat:hover{transform:translateY(-3px)}
-.hstat-n{
+.hstat-num{
   background:linear-gradient(120deg,#fff,#7CB5E0);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -306,7 +349,11 @@ body{background:#FAFBFC;min-height:100vh}
 /* Primary blue button */
 a.btn[style*="background:#0E5C8B"], .btn-primary, button.btn[style*="background:#0E5C8B"]{
   background:linear-gradient(135deg,#0E5C8B,#1B8FB0) !important;
-  box-shadow:0 4px 16px rgba(14,92,139,.35) !important;
+  animation:btnGlow 3s ease-in-out infinite;
+}
+@keyframes btnGlow{
+  0%,100%{box-shadow:0 4px 16px rgba(14,92,139,.35)}
+  50%{box-shadow:0 4px 26px rgba(43,168,201,.6)}
 }
 a.btn[style*="background:#0E5C8B"]:hover, .btn-primary:hover{
   background:linear-gradient(135deg,#073F62,#0E5C8B) !important;
@@ -635,7 +682,7 @@ footer::before{
 /* ═══════════════════════════════════════
    SCROLL ANIMATIONS
 ═══════════════════════════════════════ */
-.fi{opacity:0;transform:translateY(22px);transition:opacity .7s var(--tr),transform .7s var(--tr)}
+.fi{opacity:0;transform:translateY(22px) scale(.97);transition:opacity .7s var(--tr),transform .7s var(--tr)}
 .fi.in{opacity:1;transform:none}
 .fi.slide-left{transform:translateX(-24px)}
 .fi.slide-right{transform:translateX(24px)}

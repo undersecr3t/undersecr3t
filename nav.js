@@ -168,7 +168,7 @@ const NAV_HTML = `
   </div>
 </header>
 
-<div class="mob-nav" id="mobNav" style="display:none;position:fixed;top:0;left:0;right:0;background:white;z-index:298;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px 20px 20px;">
+<div class="mob-nav" id="mobNav">
   <a href="geoanalysis.html">Геоанализ</a>
   <a href="buildings.html">ГИС «Здания/территория»</a>
   <a href="municipal.html">Муниципальные ГИС</a>
@@ -265,18 +265,18 @@ function initNav() {
       mob.style.top = top + 'px';
     }
     hbg.addEventListener('click', () => {
-      const isOpen = mob.style.display !== 'none' && mob.style.display !== '';
+      const isOpen = mob.classList.contains('open');
       if (isOpen) {
-        mob.style.display = 'none';
+        mob.classList.remove('open');
         hbg.classList.remove('open');
       } else {
         positionMob();
-        mob.style.display = 'block';
+        mob.classList.add('open');
         hbg.classList.add('open');
       }
     });
     mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      mob.style.display = 'none';
+      mob.classList.remove('open');
       hbg.classList.remove('open');
     }));
   }
@@ -334,6 +334,31 @@ function initLightbox(){
   }, 300);
 }
 
+// Scroll progress bar
+function initScrollProgress() {
+  const bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.prepend(bar);
+  function update() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', update, {passive: true});
+  update();
+}
+
+// Cursor-tracking spotlight glow on cards
+function initCardGlow() {
+  document.querySelectorAll('.feat-item, .subsys-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+
 function initFallbacks() {
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', () => { img.style.display='none'; if(img.parentElement) img.parentElement.style.background='linear-gradient(135deg,#073F62,#0E5C8B)'; });
@@ -347,4 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initFallbacks();
   initLightbox();
+  initScrollProgress();
+  initCardGlow();
 });
