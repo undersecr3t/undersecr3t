@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ЭРМА СОФТ Менеджмент — ГИС-системы управления территорией</title>
+<meta name="description" content="ЭРМА СОФТ — стабильная российская компания, разработчик программно-информационного обеспечения с использованием геоинформационных технологий. СИТИ-Доставка, ИГС-Здание, ИГС-ГеоАналитика, Муниципальные ГИС.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#07111F;--navy2:#0D1E34;--navy3:#152840;
+  --brand:#0E5C8B;--brand-d:#073F62;--brand-l:#1B8FB0;--cyan:#2BA8C9;
+  --accent:#C0392B;--accent-l:#E74C3C;
+  --white:#fff;--paper:#FAFBFC;--cool:#F1F5F9;
+  --ink:#0A1929;--ink2:#1A2C42;--mute:#5B6B7E;--faint:#8A98A8;
+  --line:#E4EAF0;--line-s:#C8D3DF;
+  --grid:1300px;--r:8px;--rl:16px;--rxl:22px;
+  --sh-s:0 1px 3px rgba(10,25,41,.07);
+  --sh-m:0 6px 20px rgba(10,25,41,.1),0 2px 6px rgba(10,25,41,.05);
+  --sh-l:0 20px 50px rgba(10,25,41,.13),0 6px 16px rgba(10,25,41,.07);
+  --sh-xl:0 32px 72px rgba(10,25,41,.16),0 10px 24px rgba(10,25,41,.08);
+  --util-h:38px;--nav-h:68px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overscroll-behavior:none;background:var(--paper)}
+body{font-family:'Manrope',sans-serif;color:var(--ink);background:var(--white);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;overscroll-behavior:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:'Manrope',sans-serif;cursor:pointer;border:none;background:none}
+ul{list-style:none}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--cool)}
+::-webkit-scrollbar-thumb{background:var(--line-s);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--faint)}
+.wrap{max-width:var(--grid);margin:0 auto;padding:0 32px}
+
+/* ══ BUTTONS ══ */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-size:13.5px;font-weight:700;letter-spacing:.02em;border-radius:var(--r);transition:.18s;white-space:nowrap;border:1.5px solid transparent}
+.btn svg{flex-shrink:0;transition:transform .2s}
+.btn:hover svg{transform:translateX(3px)}
+.btn-primary{background:#0E5C8B;color:var(--white)}
+.btn-primary:hover{background:#073F62;transform:translateY(-1px);box-shadow:var(--sh-m)}
+.btn-white{background:var(--white);color:var(--ink)}
+.btn-white:hover{background:var(--cool);transform:translateY(-1px);box-shadow:var(--sh-m)}
+.btn-ghost-white{background:rgba(255,255,255,.1);color:var(--white);border-color:rgba(255,255,255,.4)}
+.btn-ghost-white:hover{background:rgba(255,255,255,.2)}
+.btn-outline{background:transparent;color:var(--brand);border-color:var(--brand)}
+.btn-outline:hover{background:var(--brand);color:var(--white)}
+
+/* ══ UTILITY BAR ══ */
+.util{background:var(--navy);color:rgba(255,255,255,.7);font-size:12px;height:var(--util-h);display:flex;align-items:center}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
+.util-l,.util-r{display:flex;align-items:center;gap:18px}
+.util a{transition:color .15s}
+.util a:hover{color:var(--cyan)}
+.util .pipe{color:rgba(255,255,255,.18)}
+.util-lang{display:flex;gap:3px;font-weight:700}
+.util-lang .on{color:var(--cyan)}
+.util-lang span{padding:0 5px}
+
+/* ══ MAIN NAV ══ */
+.nav{position:sticky;top:0;z-index:300;background:var(--white);border-bottom:1px solid var(--line);transition:box-shadow .2s}
+.nav.scrolled{box-shadow:var(--sh-s)}
+.nav .wrap{display:flex;align-items:center;height:var(--nav-h);gap:0}
+
+/* Logo */
+.logo{display:flex;align-items:center;flex-shrink:0;margin-right:24px}
+.logo img{height:50px;width:auto;display:block}
+
+/* Product nav links */
+.nav-items{display:flex;align-items:stretch;flex:1;height:100%}
+.nav-item{position:relative;display:flex;align-items:center}
+.nav-link{display:flex;align-items:center;gap:4px;padding:0 13px;height:100%;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;transition:color .15s,background .15s;border-bottom:2px solid transparent}
+.nav-link:hover,.nav-link.active{color:var(--brand);background:rgba(43,168,201,.12);border-bottom-color:var(--brand)}
+.nav-chev{width:12px;height:12px;opacity:.5;transition:transform .2s,opacity .2s}
+.nav-item:hover .nav-chev{transform:rotate(180deg);opacity:1}
+
+/* Dropdown */
+.dd{position:absolute;top:100%;left:0;min-width:260px;background:var(--white);border:1px solid var(--line);border-top:2px solid var(--brand);border-radius:0 0 var(--rl) var(--rl);box-shadow:var(--sh-l);padding:6px;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .2s,transform .2s,visibility .2s;z-index:400}
+.nav-item:hover .dd,.dd:hover{opacity:1;visibility:visible;transform:translateY(0)}
+.dd a{display:block;padding:9px 12px;font-size:12.5px;font-weight:500;color:var(--ink2);border-radius:6px;transition:background .13s,color .13s}
+.dd a:hover{background:var(--cool);color:var(--brand)}
+.dd-sep{height:1px;background:var(--line);margin:4px 0}
+
+/* Right side nav */
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;padding-left:12px;border-left:1px solid var(--line)}
+.nav-search{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--mute);transition:.15s}
+.nav-search:hover{color:var(--brand);background:var(--cool)}
+
+/* Hamburger */
+.hbg{display:none;flex-direction:column;gap:5px;align-items:center;justify-content:center;width:36px;height:36px}
+.hbg span{width:20px;height:2px;background:var(--ink);border-radius:1px;transition:.22s}
+.hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.open span:nth-child(2){opacity:0}
+.hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mob-nav{display:none;position:fixed;left:0;right:0;background:var(--white);border-bottom:1px solid var(--line);box-shadow:var(--sh-l);padding:12px 20px 20px;z-index:299}
+.mob-nav a{display:block;padding:11px 12px;font-size:14.5px;font-weight:600;border-radius:var(--r);transition:.13s;color:var(--ink2)}
+.mob-nav a:hover{background:var(--cool);color:var(--brand)}
+
+/* ══ HERO (SPLIT SCREEN) ══ */
+.hero{display:grid;grid-template-columns:46% 54%;min-height:calc(100vh - var(--util-h) - var(--nav-h));max-height:900px;overflow:hidden}
+.hero-l{background:var(--brand-d);display:flex;flex-direction:column;justify-content:center;padding:72px 56px 72px 32px;position:relative;z-index:1}
+.hero-l::after{content:'';position:absolute;top:0;right:-64px;bottom:0;width:128px;background:linear-gradient(90deg,var(--brand-d) 35%,transparent);z-index:2;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border:1px solid rgba(255,255,255,.22);border-radius:100px;font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.92);background:rgba(255,255,255,.07);margin-bottom:24px;width:fit-content}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-l);box-shadow:0 0 8px var(--accent-l);animation:bdot 2.4s ease-in-out infinite}
+@keyframes bdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
+.hero-h1{font-size:clamp(34px,4.2vw,62px);font-weight:800;line-height:1.06;letter-spacing:-.025em;color:var(--white);margin-bottom:18px}
+.hero-h1 em{font-style:italic;font-family:'Source Serif 4',serif;font-weight:400;background:linear-gradient(110deg,#5BCFE8,#FFC857);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-p{font-size:15.5px;font-weight:400;line-height:1.72;color:rgba(255,255,255,.82);margin-bottom:32px;max-width:440px}
+.hero-p strong{color:var(--white);font-weight:600}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+.hero-stats{display:flex;gap:0;margin-top:44px;padding-top:32px;border-top:1px solid rgba(255,255,255,.1)}
+.hstat{flex:1;display:flex;flex-direction:column;gap:3px}
+.hstat+.hstat{padding-left:20px;border-left:1px solid rgba(255,255,255,.1)}
+.hstat-num{font-size:26px;font-weight:800;color:var(--white);line-height:1;font-variant-numeric:tabular-nums}
+.hstat-lbl{font-size:10.5px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+
+.hero-r{position:relative;overflow:hidden;background:var(--navy)}
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-r-ov{position:absolute;inset:0;background:linear-gradient(255deg,rgba(7,17,31,.05) 0%,rgba(7,63,98,.5) 82%,var(--brand-d) 100%)}
+
+/* ══ STRIP ══ */
+.strip{background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.05)}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.strip-cell{padding:28px 24px;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:3px}
+.strip-cell:last-child{border-right:none}
+.strip-num{font-size:38px;font-weight:800;color:var(--cyan);line-height:1;letter-spacing:-.02em}
+.strip-num small{font-size:22px;color:var(--brand-l);font-weight:700}
+.strip-t{font-size:13.5px;font-weight:700;color:var(--white);margin-top:6px}
+.strip-d{font-size:12px;color:rgba(255,255,255,.45)}
+
+/* ══ SECTION COMMON ══ */
+section{padding:88px 0}
+.sec-lbl{display:inline-block;font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.sec-h2{font-size:clamp(26px,3vw,42px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.sec-h2 em{font-style:italic;font-family:'Source Serif 4',serif;font-weight:400;color:var(--brand)}
+.sec-p{font-size:16px;color:var(--mute);line-height:1.68;max-width:580px}
+.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:52px}
+.sec-hdr-t{max-width:660px}
+.sec-hdr-c{text-align:center;max-width:680px;margin:0 auto 52px}
+.sec-hdr-c .sec-p{margin:0 auto}
+
+/* ══ PRODUCTS ══ */
+.products{background:var(--paper)}
+.prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;align-items:stretch}
+.pc{background:var(--white);border:1px solid var(--line);border-radius:var(--rxl);overflow:hidden;display:flex;flex-direction:column;transition:.3s;height:100%}
+.pc:hover{transform:translateY(-5px);box-shadow:var(--sh-xl);border-color:transparent}
+.pc-img{height:200px;overflow:hidden;position:relative;background:var(--navy2);flex-shrink:0}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.pc:hover .pc-img img{transform:scale(1.06)}
+.pc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,30,56,.3) 0%,transparent 50%)}
+.pc-tag{position:absolute;top:14px;left:14px;z-index:2;padding:4px 11px;border-radius:100px;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;background:rgba(255,255,255,.95);color:var(--ink)}
+.pc-tag.reg{background:var(--accent);color:var(--white)}
+.pc-body{padding:24px 24px 26px;flex:1;display:flex;flex-direction:column}
+.pc-num{font-size:10.5px;font-weight:700;color:var(--brand);letter-spacing:.06em;margin-bottom:8px;font-family:monospace}
+.pc-title{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:9px}
+.pc-desc{font-size:13.5px;color:var(--mute);line-height:1.65;margin-bottom:16px}
+.pc-list{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;flex:1}
+.pc-list li{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--ink2);line-height:1.5}
+.pc-list li svg{flex-shrink:0;margin-top:3px;color:var(--brand)}
+.pc-link{font-size:13px;font-weight:700;color:var(--brand);display:inline-flex;align-items:center;gap:6px;margin-top:auto;transition:gap .18s}
+.pc:hover .pc-link{gap:10px}
+
+/* ══ WHY ══ */
+.why{background:var(--white)}
+.why-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.why-img-wrap{position:relative;border-radius:var(--rxl);overflow:hidden;aspect-ratio:5/4;box-shadow:var(--sh-xl)}
+.why-img-wrap img{width:100%;height:100%;object-fit:cover}
+.why-img-badge{position:absolute;top:20px;right:20px;background:var(--accent);color:var(--white);padding:8px 14px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.why-card{position:absolute;bottom:20px;left:20px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-radius:var(--rl);padding:14px 18px;box-shadow:var(--sh-m);display:flex;gap:12px;align-items:center}
+.why-card-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--brand));color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-card-num{font-size:19px;font-weight:800;color:var(--brand);line-height:1}
+.why-card-lbl{font-size:11px;color:var(--mute);margin-top:2px}
+
+.why-pts{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.why-pt{display:flex;gap:14px;padding:16px 18px;background:var(--paper);border:1px solid var(--line);border-radius:var(--rl);transition:.18s}
+.why-pt:hover{border-color:var(--brand-l);transform:translateX(3px);box-shadow:var(--sh-s)}
+.why-ico{width:40px;height:40px;flex-shrink:0;border-radius:10px;background:rgba(14,92,139,.08);color:var(--brand);display:flex;align-items:center;justify-content:center}
+.why-pt h4{font-size:13.5px;font-weight:800;margin-bottom:3px}
+.why-pt p{font-size:12.5px;color:var(--mute);line-height:1.55}
+
+/* ══ РЕАЛИЗОВАННЫЕ РЕШЕНИЯ ══ */
+.solutions{background:var(--cool)}
+.sol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sol-card{background:var(--white);border:1px solid var(--line);border-radius:var(--rl);padding:20px;transition:.25s;cursor:pointer;display:flex;flex-direction:column;gap:10px}
+.sol-card:hover{transform:translateY(-5px);box-shadow:var(--sh-l);border-color:var(--brand-l)}
+.sol-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sol-cat{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brand)}
+.sol-title{font-size:14.5px;font-weight:800;line-height:1.3;color:var(--ink)}
+.sol-desc{font-size:12.5px;color:var(--mute);line-height:1.55;flex:1}
+.sol-btn{margin-top:6px;padding-top:4px;font-size:12.5px;font-weight:700;color:var(--brand);background:none;border:none;cursor:pointer;text-align:left;display:inline-flex;align-items:center;gap:4px;transition:gap .2s}
+.sol-card:hover .sol-btn{gap:9px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,25,41,.55);backdrop-filter:blur(4px);z-index:800;animation:mFade .2s ease}
+@keyframes mFade{from{opacity:0}to{opacity:1}}
+.sol-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:900;background:var(--white);border-radius:var(--rxl);box-shadow:var(--sh-xl);width:min(580px,95vw);max-height:85vh;overflow-y:auto;animation:mSlide .22s ease}
+@keyframes mSlide{from{opacity:0;transform:translate(-50%,-46%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.sol-modal-hdr{display:flex;align-items:flex-start;gap:14px;padding:24px 24px 16px;position:sticky;top:0;background:var(--white);z-index:1;border-bottom:1px solid var(--line)}
+.sol-modal-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sol-modal-cat{font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.sol-modal-title{font-size:20px;font-weight:800;color:var(--ink);line-height:1.2}
+.sol-modal-close{margin-left:auto;width:32px;height:32px;border-radius:50%;background:var(--cool);border:none;cursor:pointer;font-size:14px;color:var(--mute);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.sol-modal-close:hover{background:var(--line-s);color:var(--ink)}
+.sol-modal-body{padding:20px 24px;font-size:14px;color:var(--ink2);line-height:1.7}
+.sol-modal-body h4{font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.12em;margin:16px 0 8px}
+.sol-modal-body ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:7px}
+.sol-modal-body ul li{display:flex;align-items:flex-start;gap:8px;font-size:13.5px}
+.sol-modal-body ul li::before{content:'·';color:var(--brand);font-weight:900;flex-shrink:0}
+.sol-modal-footer{padding:16px 24px 24px;display:flex;gap:10px;border-top:1px solid var(--line)}
+/* colour variants */
+.ic-blue{background:rgba(14,92,139,.09);color:var(--brand)}
+.ic-teal{background:rgba(43,168,201,.1);color:#0891b2}
+.ic-red{background:rgba(192,57,43,.08);color:var(--accent)}
+.ic-green{background:rgba(22,163,74,.09);color:#16a34a}
+.ic-purple{background:rgba(109,40,217,.09);color:#7c3aed}
+.ic-orange{background:rgba(234,88,12,.09);color:#ea580c}
+
+/* ══ INDUSTRIES ══ */
+.industries{background:var(--white)}
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ind-card{position:relative;border-radius:var(--rxl);overflow:hidden;height:380px;cursor:pointer;isolation:isolate;transition:transform .32s}
+.ind-card:hover{transform:translateY(-5px)}
+.ind-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .65s}
+.ind-card:hover img{transform:scale(1.08)}
+.ind-card::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,30,56,.94) 0%,rgba(7,30,56,.5) 35%,rgba(7,30,56,.12) 65%,transparent 100%);z-index:1;transition:.3s}
+.ind-card:hover::after{background:linear-gradient(0deg,rgba(14,92,139,.95) 0%,rgba(14,92,139,.5) 35%,rgba(14,92,139,.1) 70%,transparent 100%)}
+.ind-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:24px 24px 26px;color:var(--white)}
+.ind-eye{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.17em;text-transform:uppercase;margin-bottom:6px}
+.ind-title{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:6px}
+.ind-desc{font-size:13px;color:rgba(255,255,255,.78);line-height:1.55;max-height:0;overflow:hidden;opacity:0;transition:max-height .38s,opacity .28s}
+.ind-card:hover .ind-desc{max-height:80px;opacity:1}
+.ind-arr{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--white);margin-top:10px;transition:gap .18s}
+.ind-card:hover .ind-arr{gap:12px}
+
+/* ══ CASE ══ */
+.case-s{background:var(--paper);padding:72px 0}
+.case-wrap{border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh-xl);background:var(--white);display:grid;grid-template-columns:1.15fr 1fr;min-height:480px}
+.case-img{position:relative;overflow:hidden;background:var(--navy2)}
+.case-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.case-img::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 55%,rgba(7,30,56,.3))}
+.case-chip{position:absolute;top:18px;left:18px;z-index:2;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);padding:5px 13px;border-radius:100px;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.case-body{padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
+.case-q{font-family:'Source Serif 4',serif;font-size:20px;font-style:italic;line-height:1.5;color:var(--ink);margin-bottom:20px;padding-left:20px;border-left:3px solid var(--accent)}
+.case-auth{display:flex;align-items:center;gap:11px;margin-bottom:28px}
+.case-ava{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--brand));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:13px;flex-shrink:0}
+.case-name{font-size:13.5px;font-weight:800}
+.case-role{font-size:12px;color:var(--mute)}
+.case-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:22px;border-top:1px solid var(--line)}
+.cs-num{font-size:27px;font-weight:800;color:var(--brand);line-height:1;letter-spacing:-.02em}
+.cs-lbl{font-size:11.5px;color:var(--mute);margin-top:4px;line-height:1.4}
+
+/* ══ АКТУАЛЬНО ══ */
+.news{background:var(--white)}
+.news-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:20px}
+.nc{background:var(--white);border:1px solid var(--line);border-radius:var(--rxl);overflow:hidden;display:flex;flex-direction:column;transition:.25s;cursor:pointer}
+.nc:hover{transform:translateY(-4px);box-shadow:var(--sh-l);border-color:transparent}
+.nc-img{overflow:hidden;position:relative;background:var(--navy2)}
+.nc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.nc:hover .nc-img img{transform:scale(1.05)}
+.nc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,30,56,.18),transparent 50%)}
+.nc-img-f{aspect-ratio:16/9}
+.nc-img-s{aspect-ratio:16/9}
+.nc-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;gap:8px}
+.nc-body-f{padding:22px 26px 26px}
+.nc-meta{display:flex;align-items:center;gap:11px;font-size:11px;color:var(--mute)}
+.nc-cat{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.c-proj{color:#059669}.c-upd{color:var(--brand)}.c-ev{color:var(--accent)}.c-part{color:#7c3aed}
+.nc-title{font-size:16.5px;font-weight:800;line-height:1.3;color:var(--ink)}
+.nc-title-f{font-size:22px;line-height:1.22;letter-spacing:-.01em}
+.nc-exc{font-size:13px;color:var(--mute);line-height:1.6}
+.nc-more{font-size:12.5px;font-weight:700;color:var(--brand);display:inline-flex;align-items:center;gap:5px;margin-top:auto;transition:gap .18s}
+.nc:hover .nc-more{gap:9px}
+.news-side{display:flex;flex-direction:column;gap:20px;grid-column:2/-1}
+.news-side .nc{flex-direction:row}
+.news-side .nc-img{width:44%;flex-shrink:0;aspect-ratio:unset}
+.news-side .nc-body{padding:14px 16px 18px}
+.news-side .nc-title{font-size:13.5px;line-height:1.35}
+
+/* ══ О КОМПАНИИ ══ */
+.about{background:var(--cool)}
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
+.about-txt p{font-size:15.5px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+.about-txt p strong{color:var(--brand-d);font-weight:700}
+/* ══ ABOUT CREDS RESPONSIVE ══ */
+.about-creds{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.cred{background:var(--white);border:1px solid var(--line);border-radius:var(--rl);padding:18px 20px;transition:.18s}
+.cred:hover{border-color:var(--brand-l);transform:translateY(-2px);box-shadow:var(--sh-s)}
+.cred-n{font-size:30px;font-weight:800;color:var(--brand);line-height:1;font-family:'Source Serif 4',serif;font-style:italic}
+.cred-l{font-size:12px;color:var(--mute);margin-top:7px;line-height:1.5}
+.about-img{border-radius:var(--rxl);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--sh-xl);position:relative}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-img::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 55%,rgba(7,30,56,.38))}
+.about-img-card{position:absolute;bottom:18px;right:18px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-radius:var(--rl);padding:16px 20px;max-width:240px}
+.aic-n{font-size:24px;font-weight:800;color:var(--brand);line-height:1;font-family:'Source Serif 4',serif;font-style:italic}
+.aic-l{font-size:12px;color:var(--ink2);font-weight:600;margin-top:6px;line-height:1.4}
+
+/* ══ ПРОГРАММЫ В РЕЕСТРЕ ══ */
+.registry{background:var(--navy2);padding:60px 0}
+.reg-lbl{text-align:center;font-size:11px;font-weight:800;color:rgba(255,255,255,.35);letter-spacing:.22em;text-transform:uppercase;margin-bottom:28px}
+.reg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.reg-item{border:1px solid rgba(255,255,255,.08);border-radius:var(--rl);padding:18px 20px;display:flex;gap:12px;align-items:flex-start;transition:.18s}
+.reg-item:hover{border-color:rgba(43,168,201,.3);background:rgba(43,168,201,.05)}
+.reg-ico{width:38px;height:38px;border-radius:9px;background:rgba(43,168,201,.14);color:var(--cyan);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.reg-body h4{font-size:13px;font-weight:800;color:var(--white);margin-bottom:3px;line-height:1.3}
+.reg-body p{font-size:11.5px;color:rgba(255,255,255,.48);line-height:1.5}
+.reg-num{font-size:10.5px;color:var(--cyan);font-weight:600;margin-top:5px;font-family:monospace}
+
+/* ══ КАРТОГРАФИЯ ══ */
+.carto{background:var(--paper)}
+.carto-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.carto-img{border-radius:var(--rxl);overflow:hidden;aspect-ratio:16/11;box-shadow:var(--sh-xl)}
+.carto-img img{width:100%;height:100%;object-fit:cover}
+.carto-list{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.carto-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:var(--rl);transition:.15s}
+.carto-item:hover{border-color:var(--brand-l);transform:translateX(3px)}
+.carto-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);flex-shrink:0;margin-top:6px}
+.carto-item p{font-size:13px;color:var(--ink2);line-height:1.55}
+
+/* ══ CTA ══ */
+.cta{position:relative;overflow:hidden;isolation:isolate;padding:96px 0;color:var(--white)}
+.cta-bg{position:absolute;inset:0;z-index:-2}
+.cta-bg img{width:100%;height:100%;object-fit:cover}
+.cta-ov{position:absolute;inset:0;z-index:-1;background:linear-gradient(125deg,rgba(7,63,98,.97),rgba(14,92,139,.94) 60%,rgba(27,143,176,.89))}
+.cta-lines{position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(130deg,black,transparent 60%);-webkit-mask-image:linear-gradient(130deg,black,transparent 60%)}
+.cta-row{display:grid;grid-template-columns:1.35fr 1fr;gap:52px;align-items:center}
+.cta-h2{font-size:clamp(28px,3.6vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin-bottom:16px}
+.cta-h2 em{font-family:'Source Serif 4',serif;font-weight:400;font-style:italic;color:#FFC857}
+.cta-p{font-size:16px;color:rgba(255,255,255,.82);line-height:1.65;margin-bottom:28px;max-width:480px}
+.cta-btns{display:flex;gap:11px;flex-wrap:wrap}
+.cta-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:var(--rxl);padding:28px}
+.cta-card h3{font-size:11.5px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:18px}
+.cta-items{display:flex;flex-direction:column;gap:12px}
+.cta-item{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:500}
+.chk{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#FFC857}
+
+/* ══ FOOTER ══ */
+footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,255,255,.62)}
+.ft-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1.1fr;gap:44px;margin-bottom:48px}
+.ft-brand{display:flex;flex-direction:column;gap:14px}
+.ft-logo-n{font-size:14.5px;font-weight:800;color:var(--white)}
+.ft-logo-s{font-size:9.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.ft-tag{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.65;max-width:280px}
+.ft-soc{display:flex;gap:7px;margin-top:2px}
+.soc{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.68);transition:.15s}
+.soc:hover{background:var(--cyan);border-color:var(--cyan);color:var(--white)}
+.ft-col h4{font-size:11px;font-weight:800;color:var(--white);letter-spacing:.19em;text-transform:uppercase;margin-bottom:16px}
+.ft-col ul{display:flex;flex-direction:column;gap:9px}
+.ft-col a{color:rgba(255,255,255,.58);transition:color .15s}
+.ft-col a:hover{color:var(--cyan)}
+.ft-ci{display:flex;align-items:flex-start;gap:9px;margin-bottom:12px;font-size:12.5px;color:rgba(255,255,255,.78)}
+.ft-ci svg{color:var(--cyan);flex-shrink:0;margin-top:2px}
+.ft-ci a{color:rgba(255,255,255,.78)}
+.ft-ci a:hover{color:var(--cyan)}
+.ft-bot{padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:11px;font-size:11.5px;color:rgba(255,255,255,.38)}
+.ft-bot-links{display:flex;gap:18px}
+.ft-bot-links a{color:rgba(255,255,255,.38);transition:.15s}
+.ft-bot-links a:hover{color:rgba(255,255,255,.75)}
+
+/* ══ BACK TO TOP ══ */
+#btt{position:fixed;bottom:26px;right:26px;z-index:999;width:42px;height:42px;border-radius:11px;background:var(--brand);color:var(--white);border:none;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(14,92,139,.42);transition:.2s}
+#btt:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(14,92,139,.56)}
+#btt.show{display:flex}
+
+/* ══ REVEAL ══ */
+.fi{opacity:0;transform:translateY(24px);transition:opacity .68s ease,transform .68s ease}
+.fi.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1100px){
+  .prod-grid,.sol-grid{grid-template-columns:repeat(2,1fr)}
+  .ind-grid{grid-template-columns:1fr 1fr}
+  .ft-grid{grid-template-columns:1fr 1fr 1fr;gap:32px}
+  .ft-brand{grid-column:1/-1}
+}
+@media(max-width:900px){
+  :root{--nav-h:62px;--util-h:36px}
+  .wrap{padding:0 20px}
+  .nav-items{display:none}
+  .nav-right .btn-outline{display:none}
+  .hbg{display:flex}
+  /* Hero: stack */
+  .hero{grid-template-columns:1fr;max-height:none;min-height:auto}
+  .hero-l::after{display:none}
+  .hero-l{padding:44px 20px 40px}
+  .hero-r{min-height:240px;order:-1}
+  .hero-stats{gap:16px;padding-top:24px;margin-top:28px}
+  .hstat+.hstat{padding-left:14px}
+  section{padding:60px 0}
+  .strip .wrap{grid-template-columns:1fr 1fr}
+  .strip-cell:nth-child(2){border-right:none}
+  .strip-cell:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.07)}
+  .prod-grid,.sol-grid,.reg-grid,.carto-grid,.about-grid,.why-grid,.cta-row{grid-template-columns:1fr}
+  .about-creds{grid-template-columns:1fr 1fr}
+  .ind-grid{grid-template-columns:1fr 1fr}
+  .case-wrap{grid-template-columns:1fr}
+  .case-img{min-height:220px;aspect-ratio:16/9;position:relative}
+  .case-body{padding:28px 22px}
+  .case-stats{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr}
+  .news-side{grid-column:1;grid-row:auto}
+  .news-side .nc{flex-direction:column}
+  .news-side .nc-img{width:100%;aspect-ratio:16/9}
+  .about-creds{grid-template-columns:1fr}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:26px}
+  .ft-bot{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:520px){
+  .hero-h1{font-size:30px}
+  .hero-stats{flex-direction:column;gap:12px}
+  .hstat+.hstat{padding-left:0;border-left:none}
+  .sol-grid{grid-template-columns:1fr}
+  .cta-row{grid-template-columns:1fr}
+  .about-creds{grid-template-columns:1fr}
+  .ind-grid{grid-template-columns:1fr}
+}
+</style>
+<link rel="stylesheet" href="premium.css">
+</head>
+<body>
+
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
+<!-- ══════════ UTILITY BAR ══════════ -->
+<div class="util">
+  <div class="wrap">
+    <div class="util-l">
+      <a href="tel:+74959680280">+7 (495) 968-02-80</a>
+      <span class="pipe">|</span>
+      <a href="mailto:erma@ermasoft.ru">erma@ermasoft.ru</a>
+      <span class="pipe">|</span>
+      <a href='/about'>О компании</a>
+      <a href="#news">Актуально</a>
+      <a href="#contact">Контакты</a>
+    </div>
+    <div class="util-r">
+      <a href="tel:+74959680280">Пн–Пт 9:00–18:00 МСК</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MAIN NAV ══════════ -->
+<header class="nav" id="mainNav">
+  <div class="wrap">
+    <!-- Logo -->
+    <a href='/' style='display:flex;align-items:center;flex-shrink:0;margin-right:24px;text-decoration:none'><img src="images/ermasoft-logo-white.png" alt="ЭРМА СОФТ Менеджмент" style="height:42px;width:auto;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.25))"></a>
+
+    <!-- Product navigation — matches real site structure -->
+    <nav>
+      <ul class="nav-items">
+
+        <li class="nav-item">
+          <a class='nav-link' href='/geoanalysis'>Геоанализ
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd">
+            <a href='/geoanalysis-sales'>Анализ продаж</a>
+            <a href='/geoanalysis-reps'>Управление торговыми представителями</a>
+            <a href='/geoanalysis-competition'>Анализ конкурентной среды</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/buildings'>ГИС «Здания/территория»
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd" style="min-width:240px">
+            <a href='/buildings-main'>Основные подсистемы</a>
+            <a href='/buildings-exploitation'>Управление эксплуатацией</a>
+            <a href='/buildings-requests'>Контроль исполнения заявок</a>
+            <a href='/buildings-placement'>Управление размещением</a>
+            <a href='/buildings-rent'>Управление арендой</a>
+            <div class="dd-sep"></div>
+            <a href='/buildings-networks'>Инженерные сети</a>
+            <a href='/buildings-security'>Обеспечение безопасности</a>
+            <a href='/buildings-archive'>Электронный архив</a>
+            <a href='/buildings-support'>Техническая поддержка</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/municipal'>Муниципальные ГИС
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd">
+            <a href='/municipal-geoarm'>Реализованные ГеоАРМ</a>
+            <a href='/municipal-analytics'>Аналитические возможности</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/transport'>Транспортная логистика
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd">
+            <a href='/transport-city'>СИТИ-Доставка. Маршрутизация в мегаполисе</a>
+            <a href='/transport-oil'>СИТИ-Доставка НП. Доставка нефтепродуктов</a>
+            <a href='/transport-incasso'>СИТИ-Инкассация. Управление инкассацией</a>
+            <a href='/transport-logistics'>ПФК-Логистика. Междугородние перевозки</a>
+            <div class="dd-sep"></div>
+            <a href='/transport-geomonitor'>ГеоМониторинг. Анализ и контроль ТС</a>
+            <a href='/transport-trade'>СИТИ-Трейд. Торговые представители</a>
+            <a href='/transport-mobile'>Мобильные сервисы</a>
+            <a href="#solutions">Комплексная автоматизация</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/situation'>Ситуационное управление
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd">
+            <a href='/situation-infra'>Инфраструктура территории</a>
+            <a href='/situation-passport'>Паспортизация объектов</a>
+            <a href='/situation-events'>Регистрация событий и мероприятий</a>
+            <a href='/situation-deviations'>Выявление отклонений</a>
+            <a href='/situation-development'>Развитие событий</a>
+            <a href="#solutions">Комплексная автоматизация</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/cartography'>Картография</a>
+        </li>
+
+        <li class="nav-item">
+          <a class='nav-link' href='/about'>О компании
+            <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="dd" style="min-width:290px">
+            <a href='/about-company'>О компании ЭРМА СОФТ</a>
+            <a href='/about-directions'>Направления деятельности</a>
+            <a href='/about-solutions'>Реализованные решения</a>
+            <a href='/about-registry'>Зарегистрированные продукты (Реестр РФ)</a>
+            <a href='/about-company'>Научный потенциал</a>
+            <div class="dd-sep"></div>
+            <a href='/about-contacts'>Реквизиты и контакты</a>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="nav-right">
+      <button class="hbg" id="hbg" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mob-nav" id="mobNav" style="display:none">
+  <a href='/buildings'>ГИС «Здания/территория»</a>
+  <a href='/municipal'>Муниципальные ГИС</a>
+  <a href='/transport'>Транспортная логистика</a>
+  <a href='/situation'>Ситуационное управление</a>
+  <a href='/cartography'>Картография</a>
+  <a href='/about'>О компании</a>
+  <a href="#news">Актуально</a>
+  <a href="#contact">Контакты</a>
+  <button type="button" onclick="openContactModal()" class="btn" style="width:100%;justify-content:center;background:var(--brand);color:white;margin-top:14px;border:none">Запросить демо →</button>
+</div>
+
+<!-- ══════════ HERO — SPLIT SCREEN ══════════ -->
+<section class="hero" id="hero">
+  <!-- Left panel: TEXT -->
+  <div class="hero-l fi in">
+    
+<!-- Decorative floating dots -->
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;pointer-events:none;z-index:0">
+  <svg style="position:absolute;top:10%;right:5%;opacity:.06" width="320" height="320" viewBox="0 0 320 320">
+    <defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#7CB5E0"/></pattern></defs>
+    <rect width="320" height="320" fill="url(#dots)"/>
+  </svg>
+</div>
+<div class="hero-badge"><span class="badge-dot"></span>Геоинформационные технологии</div>
+    <h1 class="hero-h1">
+      Управление<br>территорией<br><em>в одной системе</em>
+    </h1>
+    <p class="hero-p">
+      <strong>ЭРМА СОФТ Менеджмент</strong> — стабильная российская компания, разработчик программно-информационного обеспечения с использованием геоинформационных технологий. Компания имеет большой пакет реализованных проектов и все необходимые ресурсы для проведения комплексных наукоёмких разработок по созданию, развитию и сопровождению автоматизированных информационно-графических систем.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">2002</div><div class="hstat-lbl">Год основания</div></div>
+      <div class="hstat"><div class="hstat-num">3</div><div class="hstat-lbl">Продукта в Реестре РФ</div></div>
+      <div class="hstat"><div class="hstat-num">13<span style="font-size:16px;opacity:.6">+</span></div><div class="hstat-lbl">Типов решений</div></div>
+    </div>
+  </div>
+  <!-- Right panel: VIDEO -->
+  <div class="hero-r">
+    <video class="hero-vid" autoplay muted loop playsinline preload="auto">
+      <source src="hero_video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-r-ov"></div>
+  </div>
+</section>
+
+<!-- ══════════ NUMBERS STRIP ══════════ -->
+<div class="strip">
+  <div class="wrap">
+    <div class="strip-cell fi">
+      <div class="strip-num"><span class="ctr" data-to="150">0</span><small>+</small></div>
+      <div class="strip-t">Реализованных проектов</div>
+      <div class="strip-d">Для государства и бизнеса</div>
+    </div>
+    <div class="strip-cell fi d1">
+      <div class="strip-num"><span class="ctr" data-to="20">0</span><small>+</small></div>
+      <div class="strip-t">Лет на рынке</div>
+      <div class="strip-d">Непрерывная разработка с 2002 г.</div>
+    </div>
+    <div class="strip-cell fi d2">
+      <div class="strip-num"><span class="ctr" data-to="3">0</span></div>
+      <div class="strip-t">Программы в Реестре РФ</div>
+      <div class="strip-d">Свидетельства Роспатента, ФСТЭК</div>
+    </div>
+    <div class="strip-cell fi d3">
+      <div class="strip-num"><span class="ctr" data-to="13">0</span><small>+</small></div>
+      <div class="strip-t">Направлений решений</div>
+      <div class="strip-d">От логистики до ситуационных центров</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PRODUCTS ══════════ -->
+<section class="products" id="products" style="position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,#FAFBFC 0%,#F0F4F9 100%);z-index:0"></div>
+  <div style="position:absolute;bottom:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(14,92,139,.06) 0%,transparent 70%);pointer-events:none"></div>
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="sec-hdr-t fi">
+        <div class="sec-lbl">Программные комплексы</div>
+        <h2 class="sec-h2">Программные комплексы <em>ЭРМА СОФТ</em></h2>
+        <p class="sec-p">Четыре программных продукта для управления зданиями, транспортной логистики, геоанализа и ситуационного управления. Включены в Реестр российского ПО Минцифры.</p>
+      </div>
+      <a href="#contact" class="btn btn-outline fi d2">Все продукты <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="prod-grid">
+
+      <!-- 1: ПФК Мониторинг -->
+      <div class="pc fi">
+        <div class="pc-img">
+          <span class="pc-tag">Мониторинг</span>
+          <img src="images/pfk-monitor-new.png" alt="ПФК-Мониторинг" loading="lazy" style="object-fit:contain;background:#e8f0f8;padding:8px">
+        </div>
+        <div class="pc-body">
+          <div class="pc-num">ГеоМониторинг · Анализ и контроль ТС</div>
+          <h3 class="pc-title">ПФК-Мониторинг</h3>
+          <p class="pc-desc">Программно-информационная система для контроля мобильных объектов с использованием навигационного оборудования и GPS.</p>
+          <ul class="pc-list">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Плановые маршруты движения из СИТИ-Доставка</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>GPS-навигация, состояние датчиков, расход топлива</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Анализ план/факт, выявление нештатных ситуаций</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Оповещение об отставании, подготовка отчётов</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Надёжное оборудование российских производителей</li>
+          </ul>
+          <a class='pc-link' href='/transport#geomonitor'>Подробнее <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <!-- 2: ИГС Здание -->
+      <div class="pc fi d1">
+        <div class="pc-img">
+          <span class="pc-tag reg">Реестр РФ № 27706</span>
+          <img src="images/igs-zdanie.png" alt="ИГС-Здание" loading="lazy" style="object-fit:contain;background:#f0f4f8;padding:4px">
+        </div>
+        <div class="pc-body">
+          <div class="pc-num">Роспатент № 2021619648 · 15.06.2021</div>
+          <h3 class="pc-title">ИГС-Здание</h3>
+          <p class="pc-desc">Система управления зданиями и территорией — поэтажные планы, эксплуатация, аренда, инженерные сети, безопасность, электронный архив.</p>
+          <ul class="pc-list">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Поэтажные планы, данные о помещениях, реконструкции</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Учёт заявок, размещение, аренда помещений</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Инженерные сети: электро, кондиционирование, лифты</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Видеонаблюдение, пожарная сигнализация</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Электронный архив технической документации</li>
+          </ul>
+          <a class='pc-link' href='/buildings'>Подробнее <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <!-- 3: СИТИ Доставка -->
+      <div class="pc fi d2">
+        <div class="pc-img">
+          <span class="pc-tag reg">Реестр РФ № 21671</span>
+          <img src="images/city-delivery-new.png" alt="СИТИ-Доставка" loading="lazy" style="object-fit:contain;background:#e8f0f8;padding:8px">
+        </div>
+        <div class="pc-body">
+          <div class="pc-num">Роспатент № 2015660641 · 05.10.2015</div>
+          <h3 class="pc-title">СИТИ-Доставка</h3>
+          <p class="pc-desc">ГИС «СИТИ-Доставка/ЭРМА СОФТ» предназначена для планирования ежедневных рейсов доставки продукции клиентам в большом городе / регионе.</p>
+          <ul class="pc-list">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Автораспределение заявок по машинам и рейсам</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Маршрутные листы, пробег, расход топлива</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Интеграция с 1С, BASIS, Axapta, Галактика, Парус</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Версии: мегаполис, нефтепродукты, инкассация</li>
+          </ul>
+          <a class='pc-link' href='/transport#city-delivery'>Подробнее <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <!-- 4: ПФС Геоанализ -->
+      <div class="pc fi d3">
+        <div class="pc-img">
+          <span class="pc-tag">Роспатент</span>
+          <img src="images/pfs-geoanaliz.png" alt="ПФС-Геоанализ" loading="lazy" style="object-fit:contain;background:#e8f0f8;padding:8px">
+        </div>
+        <div class="pc-body">
+          <div class="pc-num">Роспатент № 2022617984 · 27.04.2022</div>
+          <h3 class="pc-title">ПФС-Геоанализ</h3>
+          <p class="pc-desc">Программно-функциональная система «Геоанализ» автоматизирует процессы ввода, анализа и отображения данных для ситуационного (диспетчерского) центра.</p>
+          <ul class="pc-list">
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Инфраструктура и паспортизация объектов территории</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Регистрация событий, выявление отклонений</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Мониторинг нештатных ситуаций и их развития</li>
+            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>«Толстый» и «тонкий» клиент (Internet-браузер)</li>
+          </ul>
+          <a class='pc-link' href='/situation'>Подробнее <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WHY ══════════ -->
+<section class="why">
+  <div class="wrap">
+    <div class="why-grid">
+      <div class="why-img-wrap fi">
+        <img src="images/why-us.jpg" alt="Научные разработки ЭРМА СОФТ" loading="lazy">
+      </div>
+      <div class="fi d1">
+        <div class="sec-lbl">Почему ЭРМА СОФТ</div>
+        <h2 class="sec-h2">Научный фундамент.<br><em>Российское качество.</em></h2>
+        <p class="sec-p">Компания является базовым предприятием кафедры «Системная интеграция и менеджмент» МФТИ и кафедры «Кибернетика» МИФИ. Генеральный директор — к.т.н., доцент МФТИ, член-корреспондент РАЕН.</p>
+        <ul class="why-pts">
+          <li class="why-pt">
+            <div class="why-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></div>
+            <div><h4>Реестр российского ПО</h4><p>Три продукта в Едином реестре Минцифры. Полное соответствие требованиям импортозамещения.</p></div>
+          </li>
+          <li class="why-pt">
+            <div class="why-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><h4>Государственная лицензия</h4><p>Лицензия Роскартографии на создание и обновление топографических карт на территории РФ.</p></div>
+          </li>
+          <li class="why-pt">
+            <div class="why-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div><h4>Комплексный подход</h4><p>От консалтинга и ТЗ до внедрения, авторского сопровождения и долгосрочной технической поддержки.</p></div>
+          </li>
+          <li class="why-pt">
+            <div class="why-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div><h4>Партнёры — ведущие научные организации</h4><p>Выполняем заказы для государственных и коммерческих организаций, партнёры — ведущие НИИ России.</p></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ РЕАЛИЗОВАННЫЕ РЕШЕНИЯ ══════════ -->
+<section class="solutions" id="solutions">
+  <div class="wrap">
+    <div class="sec-hdr-c fi">
+      <div class="sec-lbl">Портфель проектов</div>
+      <h2 class="sec-h2">Реализованные <em>решения</em></h2>
+      <p class="sec-p">ЭРМА СОФТ реализует наукоёмкие проекты для государственных органов и коммерческих организаций. Нажмите на карточку, чтобы узнать подробнее.</p>
+    </div>
+    <div class="sol-grid fi d1">
+
+      <div class="sol-card" onclick="openModal('sol-delivery')">
+        <div class="sol-icon ic-orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <span class="sol-cat">Логистика</span>
+        <div class="sol-title">Планирование доставки грузов</div>
+        <p class="sol-desc">Количество машин, маршрут, время прибытия. Рациональная загрузка, маршрутные листы.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-sales')">
+        <div class="sol-icon ic-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <span class="sol-cat">Аналитика</span>
+        <div class="sol-title">Анализ и управление продажами</div>
+        <p class="sol-desc">Тематические многоцветные карты объёмов продаж, параметрические запросы, отчёты в Excel.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-buildings')">
+        <div class="sol-icon ic-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 9h.01M15 9h.01"/></svg></div>
+        <span class="sol-cat">ГИС Здания</span>
+        <div class="sol-title">Управление эксплуатацией зданий</div>
+        <p class="sol-desc">Поэтажные планы, БД помещений, арендаторов, сотрудников, контроль заявок.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-archive')">
+        <div class="sol-icon ic-purple"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
+        <span class="sol-cat">Архивирование</span>
+        <div class="sol-title">Архив технической документации</div>
+        <p class="sol-desc">Сканирование, оцифровка, алфавитно-цифровая и графическая БД на планах БТИ.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-municipal')">
+        <div class="sol-icon ic-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <span class="sol-cat">Муниципальные ГИС</span>
+        <div class="sol-title">Муниципальные геоприложения</div>
+        <p class="sol-desc">Многопользовательские ГеоАРМ для органов власти. Web-доступ, адресные реестры.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-competition')">
+        <div class="sol-icon ic-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div>
+        <span class="sol-cat">Маркетинг</span>
+        <div class="sol-title">Мониторинг конкурентной среды</div>
+        <p class="sol-desc">Экспресс-анализ: местоположение, объёмы продаж, ассортимент, ценовые параметры.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-transport-sales')">
+        <div class="sol-icon ic-orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18M3 12h18M3 21h18"/></svg></div>
+        <span class="sol-cat">Логистика</span>
+        <div class="sol-title">Мониторинг продаж транспортных услуг</div>
+        <p class="sol-desc">Визуализация схем транспортировки, контроль выполнения транспортных операций.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-safety')">
+        <div class="sol-icon ic-red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <span class="sol-cat">Социальная сфера</span>
+        <div class="sol-title">Карта социальной безопасности</div>
+        <p class="sol-desc">Для детей и подростков: результаты социологических исследований, межведомственные данные.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-education')">
+        <div class="sol-icon ic-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <span class="sol-cat">Образование</span>
+        <div class="sol-title">ГИС в образовании</div>
+        <p class="sol-desc">Методические материалы по КСБ, семинары для руководителей и педагогов.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-security')">
+        <div class="sol-icon ic-red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span class="sol-cat">Безопасность</span>
+        <div class="sol-title">ГИС в безопасности</div>
+        <p class="sol-desc">Маршруты охраняемых лиц, группы быстрого реагирования, оперативная обстановка.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-monitor')">
+        <div class="sol-icon ic-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <span class="sol-cat">Мониторинг</span>
+        <div class="sol-title">Мониторинг мобильных объектов</div>
+        <p class="sol-desc">Планирование маршрутов, визуальный мониторинг, сравнение плана с фактом.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+      <div class="sol-card" onclick="openModal('sol-webgis')">
+        <div class="sol-icon ic-purple"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <span class="sol-cat">Web-ГИС</span>
+        <div class="sol-title">Геоприложения для WWW</div>
+        <p class="sol-desc">Встраивание геоприложений в сайт, картографические данные с поиском и отчётами.</p>
+        <button class="sol-btn">Подробнее →</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal()" style="display:none"></div>
+
+<!-- Global Contact Modal -->
+<div id="contact-modal-overlay" class="modal-overlay" style="display:none" onclick="closeContactModal()"></div>
+<div id="contact-modal" style="display:none">
+  <div class="cm-hdr">
+    <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div><div class="cm-eyebrow">ЭРМА СОФТ Менеджмент</div><h3 class="cm-title">Свяжитесь с нами</h3></div>
+    <button class="cm-close" onclick="closeContactModal()">✕</button>
+  </div>
+  <div class="cm-body">
+    <p>Расскажите о задаче вашей организации — подготовим демонстрацию и коммерческое предложение в течение 3 рабочих дней.</p>
+    <div class="cm-row">
+      <div class="cm-group"><label>Имя</label><input type="text" id="cm-name" placeholder="Ваше имя"></div>
+      <div class="cm-group"><label>Организация</label><input type="text" id="cm-org" placeholder="Название компании"></div>
+    </div>
+    <div class="cm-row">
+      <div class="cm-group"><label>Email</label><input type="email" id="cm-email" placeholder="you@company.ru"></div>
+      <div class="cm-group"><label>Телефон</label><input type="tel" id="cm-phone" placeholder="+7 (___) ___-__-__"></div>
+    </div>
+    <div class="cm-group full"><label>Сообщение</label><textarea id="cm-msg" placeholder="Кратко опишите задачу..."></textarea></div>
+    <div class="cm-direct">
+      <a href="tel:+74959680280"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +7 (495) 968-02-80</a>
+      <a href="mailto:erma@ermasoft.ru"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> erma@ermasoft.ru</a>
+    </div>
+  </div>
+  <div class="cm-footer">
+    <button type="button" class="btn" style="background:linear-gradient(135deg,#0E5C8B,#1B8FB0);color:white;border:none" onclick="submitContactModal(this)">Отправить заявку</button>
+    <button type="button" class="btn btn-outline" style="color:#0A1929;border-color:#C8D3DF" onclick="closeContactModal()">Отмена</button>
+  </div>
+</div>
+
+<div id="sol-delivery" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-orange"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div class="sol-modal-cat">Логистика · СИТИ-Доставка</div><h3 class="sol-modal-title">Планирование доставки грузов</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p><strong>ГИС «СИТИ-Доставка/ЭРМА СОФТ»</strong> предназначена для планирования ежедневных рейсов доставки продукции клиентам в большом городе и регионе.</p>
+    <h4>Решаемые задачи:</h4>
+    <ul><li>Планирование количества машин, маршрутов, времени прибытия к клиенту</li><li>Рациональное планирование загрузки каждого автомобиля</li><li>Создание маршрутных листов и сводных накладных</li><li>Автоматизированное распределение заявок по машинам (рейсам)</li><li>Максимальная загрузка по весу/объёму, минимизация суммарного пробега</li><li>Учёт географических зон, категорий транспорта и заказов</li><li>Визуализация рейсов на карте, расчёт пробега, расхода топлива</li><li>Интеграция с 1С, BASIS, Axapta, Галактика, Парус, Oracle</li></ul>
+    <p style="margin-top:12px"><strong>Реестр РФ № 21671</strong> · Роспатент № 2015660641</p>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/transport-city'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-sales" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="sol-modal-cat">Аналитика · СИТИ-Маркет</div><h3 class="sol-modal-title">Анализ и управление продажами</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p><strong>СИТИ-Маркет/ЭРМА СОФТ</strong> позволяет анализировать сбытовую деятельность с использованием геоинформационных технологий.</p>
+    <h4>Возможности:</h4>
+    <ul><li>Накапливать числовые данные по объектам (оборот, сумма задолженности…) за отчётный период</li><li>Разбивать объекты на группы («успешно», «средне», «плохо») с помощью числовых ограничений</li><li>Создавать тематические многоцветные карты объёмов продаж</li><li>Готовить картографические отчёты в формате Excel</li><li>Параметрические SQL-запросы к геоданным</li><li>Градиентная заливка для неравномерно распределённых данных</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/geoanalysis-sales'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-buildings" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 9h.01M15 9h.01"/></svg></div><div><div class="sol-modal-cat">ГИС Здания · ИГС-Здание</div><h3 class="sol-modal-title">Управление зданиями и территорией</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p><strong>ИГС-Здание</strong> — многопользовательская система управления зданиями и сооружениями на базе ГИС-технологий. <strong>Реестр РФ № 27706.</strong></p>
+    <h4>Основные подсистемы:</h4>
+    <ul><li><strong>Управление эксплуатацией</strong> — поэтажные планы, история реконструкций и ремонтов</li><li><strong>Контроль заявок</strong> — регистрация, назначение, контроль исполнения</li><li><strong>Управление размещением</strong> — перемещение сотрудников, оборудования</li><li><strong>Управление арендой</strong> — реестр арендаторов, расчёт платежей</li><li><strong>Инженерные сети</strong> — электро, кондиционирование, лифты</li><li><strong>Безопасность</strong> — видеонаблюдение, пожарная сигнализация</li><li><strong>Электронный архив</strong> технической документации</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/buildings-main'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-archive" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-purple"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="sol-modal-cat">Архивирование</div><h3 class="sol-modal-title">Архив технической документации</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <h4>Решаемые задачи:</h4>
+    <ul><li>Подготовка алфавитно-цифровой БД с характеристиками технических чертежей</li><li>Графическая БД с местоположением чертежей на поэтажных планах БТИ</li><li>Сканирование и создание библиотеки электронных копий документации</li><li>Объединение БД и электронных копий в единый архив</li><li>Поиск документов по атрибутам</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/buildings-archive'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-municipal" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><div><div class="sol-modal-cat">Муниципальные ГИС</div><h3 class="sol-modal-title">Муниципальные геоприложения</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p>Многопользовательское геоприложение с группами ГеоАРМ для органов местного самоуправления.</p>
+    <h4>Группы пользователей:</h4>
+    <ul><li>ГеоАРМ в сети Префектуры</li><li>ГеоАРМ у удалённых пользователей</li><li>ГеоАРМ в сети Интернет (web-доступ)</li><li>Обслуживающие ГеоАРМ</li></ul>
+    <h4>Состав системы:</h4>
+    <ul><li>Картографическая основа и адресные данные</li><li>Тематические данные для управленческих решений</li><li>Голосование жителей на интерактивной карте</li></ul>
+    <p style="margin-top:12px">Реализовано: Зеленоградский АО г. Москвы · <strong>zelao.ermasoft.ru</strong></p>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/municipal-geoarm'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-competition" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div><div><div class="sol-modal-cat">Маркетинг</div><h3 class="sol-modal-title">Мониторинг конкурентной среды</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <h4>Решаемые задачи:</h4>
+    <ul><li>Объединение данных для визуального анализа: местоположение, принадлежность, объёмы продаж, ассортимент, ценовые параметры, фотографии</li><li>Расширение клиентской сети с учётом транспортных и пассажиро-потоков</li><li>Тематическая раскраска объектов, буферные зоны</li><li>Анализ транспортной доступности торговых точек</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/geoanalysis-competition'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-transport-sales" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-orange"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18M3 12h18M3 21h18"/></svg></div><div><div class="sol-modal-cat">Логистика</div><h3 class="sol-modal-title">Мониторинг продаж транспортных услуг</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <ul><li>Отображение на карте участников логистической цепи</li><li>Визуализация схем транспортировки грузов</li><li>Формирование единиц транспортировки с характеристиками</li><li>Контроль выполнения транспортных операций</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/transport-trade'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-safety" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="sol-modal-cat">Социальная сфера</div><h3 class="sol-modal-title">Карта социальной безопасности</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p>Мониторинг территории для детей и подростков:</p>
+    <ul><li>Результаты социологических исследований и межведомственных данных</li><li>Актуализация картографических и тематических данных о территории</li><li>Подготовка БД «Социальная безопасность»</li><li>Издание «Карта социальной безопасности» (КСБ)</li><li>Методические материалы для системы образования</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/about-solutions'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-education" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div><div class="sol-modal-cat">Образование</div><h3 class="sol-modal-title">ГИС в образовании</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <ul><li>Подготовка методических материалов по использованию КСБ в системе образования</li><li>Семинары для руководителей образовательных структур</li><li>Обучение преподавателей ОБЖ и Информатики</li><li>Семинары для служб социальной сферы</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/about-solutions'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-security" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="sol-modal-cat">Безопасность</div><h3 class="sol-modal-title">ГИС в безопасности</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <ul><li>Создание основного и резервного маршрута охраняемого лица</li><li>Маршруты группы быстрого реагирования</li><li>Дополнительные материалы для оперативных решений</li><li>Фиксация оперативной обстановки в местах пребывания охраняемого лица</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/about-solutions'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-monitor" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="sol-modal-cat">Мониторинг · ГеоМониторинг</div><h3 class="sol-modal-title">Мониторинг мобильных объектов</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p><strong>ГеоМониторинг</strong> — система для контроля мобильных объектов с навигационным оборудованием.</p>
+    <ul><li>Планирование маршрутов и временных коридоров</li><li>Визуальный мониторинг, контроль передвижения объектов</li><li>Обмен сообщениями с диспетчерским центром</li><li>Сопоставление планового и фактического графика движения</li><li>Обработка и анализ накопленных данных</li><li>Контроль датчиков: топливо, температура, открытие дверей</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/transport-geomonitor'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<div id="sol-webgis" class="sol-modal" style="display:none">
+  <div class="sol-modal-hdr"><div class="sol-modal-ico ic-purple"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div><div class="sol-modal-cat">Web-ГИС</div><h3 class="sol-modal-title">Геоприложения для WWW</h3></div><button class="sol-modal-close" onclick="closeModal()">✕</button></div>
+  <div class="sol-modal-body">
+    <p>Встраивание геоприложения в Web-страницу с отображением картографической информации:</p>
+    <ul><li>Выбор фрагмента карты, масштабирование и перемещение</li><li>Настройка легенды: шрифты, графическое описание объектов</li><li>Тематическая раскраска карты</li><li>Вывод фрагмента карты на печать</li><li>Поиск объектов по признакам</li></ul>
+  </div>
+  <div class="sol-modal-footer"><a class='btn btn-primary' href='/municipal-geoarm'>Открыть раздел</a><button onclick="closeModal()" class="btn btn-outline" style="color:var(--ink);border-color:var(--line-s)">Закрыть</button></div>
+</div>
+
+<!-- ══════════ INDUSTRIES ══════════ -->
+<section class="industries" id="industries">
+  <div class="wrap">
+    <div class="sec-hdr-c fi">
+      <div class="sec-lbl">Отрасли применения</div>
+      <h2 class="sec-h2">Кому мы <em>помогаем</em></h2>
+      <p class="sec-p">ЭРМА СОФТ выполняет заказы в интересах государственных и коммерческих организаций. Партнёры по реализации проектов — ведущие научные организации России.</p>
+    </div>
+    <div class="ind-grid fi d1">
+      <a href="#contact" class="ind-card">
+        <img src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=700&q=80" alt="Муниципалитеты" loading="lazy">
+        <div class="ind-body">
+          <div class="ind-eye">Государство</div>
+          <h3 class="ind-title">Муниципалитеты и префектуры</h3>
+          <p class="ind-desc">Управление городским хозяйством, учёт объектов, земельный кадастр, голосование на карте.</p>
+          <span class="ind-arr">Подробнее <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+      <a href="#contact" class="ind-card">
+        <img src="https://images.unsplash.com/photo-1488229297570-58520851e868?auto=format&fit=crop&w=700&q=80" alt="Промышленность" loading="lazy">
+        <div class="ind-body">
+          <div class="ind-eye">Бизнес</div>
+          <h3 class="ind-title">Торговые сети и логистика</h3>
+          <p class="ind-desc">Планирование маршрутов доставки в крупных городах и регионах для торговых сетей и интернет-магазинов.</p>
+          <span class="ind-arr">Подробнее <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+      <a href="#contact" class="ind-card">
+        <img src="https://images.unsplash.com/photo-1613059093860-582e53c584c3?auto=format&fit=crop&w=700&q=80" alt="Нефтяная отрасль" loading="lazy">
+        <div class="ind-body">
+          <div class="ind-eye">ТЭК</div>
+          <h3 class="ind-title">Нефтяная и газовая отрасль</h3>
+          <p class="ind-desc">Специализированные ГИС: мониторинг нефтепродуктов, инкассация, инфраструктура ТЭК.</p>
+          <span class="ind-arr">Подробнее <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CASE STUDY ══════════ -->
+<section class="case-s">
+  <div class="wrap">
+    <div class="case-wrap fi">
+      <div class="case-img">
+        <span class="case-chip">Реализованный проект</span>
+        <img src="images/zelenograd.jpg" alt="Зеленоград — ГИС-проект ЭРМА СОФТ" loading="lazy">
+      </div>
+      <div class="case-body">
+        <div class="sec-lbl">Кейс · Зеленоград</div>
+        <h2 class="sec-h2" style="font-size:clamp(22px,2.6vw,34px);margin-bottom:22px">Web-ГИС Зеленоградского АО Москвы</h2>
+        <p class="case-q">«Система ЭРМА СОФТ позволила перевести учёт имущественного комплекса округа в цифровое пространство и запустить голосование жителей на интерактивной карте города.»</p>
+        <div class="case-auth">
+          <div class="case-ava">ЗАО</div>
+          <div><div class="case-name">Зеленоградский административный округ</div><div class="case-role">г. Москва · 2018–2019</div></div>
+        </div>
+        <div class="case-stats">
+          <div><div class="cs-num">Web</div><div class="cs-lbl">Доступ без установки ПО</div></div>
+          <div><div class="cs-num">zelao</div><div class="cs-lbl">Публичный портал zelao.ermasoft.ru</div></div>
+          <div><div class="cs-num">2019</div><div class="cs-lbl">Запуск голосования жителей</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ АКТУАЛЬНО ══════════ -->
+<section class="news" id="news">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="sec-hdr-t fi">
+        <div class="sec-lbl">Актуально</div>
+        <h2 class="sec-h2">Новости и <em>события</em></h2>
+        <p class="sec-p">Регистрации продуктов, выступления на конференциях, реализованные проекты и партнёрства.</p>
+      </div>
+      <a href="#contact" class="btn btn-outline fi d2">Все новости <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="news-grid fi d1">
+      <a href="#news" class="nc">
+        <div class="nc-img nc-img-f"><img src="https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=1200&q=80" alt="Москва" loading="lazy"></div>
+        <div class="nc-body nc-body-f">
+          <div class="nc-meta"><span class="nc-cat c-proj">Реестр РФ</span><span>Апрель 2025</span></div>
+          <h3 class="nc-title nc-title-f">ИГС-Здание внесена в Реестр российского ПО под номером 27706</h3>
+          <p class="nc-exc">Приказом Минцифры РФ от 21.04.2025 система управления зданиями, сооружениями и прилегающей территорией (ИГС-Здание) зарегистрирована в Едином реестре российского программного обеспечения.</p>
+          <span class="nc-more">Подробнее <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+      <div class="news-side">
+        <a href="#news" class="nc">
+          <div class="nc-img nc-img-s"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Ситуационный центр" loading="lazy"></div>
+          <div class="nc-body">
+            <div class="nc-meta"><span class="nc-cat c-upd">Роспатент</span><span>2022</span></div>
+            <h3 class="nc-title">Зарегистрирована ИГС-ГеоАналитика для ситуационных центров</h3>
+            <p style="font-size:12px;color:var(--mute)">Свидетельство Роспатента № 2022617984. Система поддерживает мониторинг событий и нештатных ситуаций.</p>
+          </div>
+        </a>
+        <a href="#news" class="nc">
+          <div class="nc-img nc-img-s"><img src="https://images.unsplash.com/photo-1635172298210-b8891ba8f53f?auto=format&fit=crop&w=600&q=80" alt="Транспорт" loading="lazy"></div>
+          <div class="nc-body">
+            <div class="nc-meta"><span class="nc-cat c-ev">Выставка</span><span>Апрель 2014</span></div>
+            <h3 class="nc-title">ТРАНСРОССИЯ 2014 — ЭРМА СОФТ представила транспортно-логистические решения</h3>
+            <p style="font-size:12px;color:var(--mute)">Крокус Экспо, павильон № 1, стенд В 223.</p>
+          </div>
+        </a>
+        <a href="#news" class="nc">
+          <div class="nc-img nc-img-s"><img src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=600&q=80" alt="Зеленоград" loading="lazy"></div>
+          <div class="nc-body">
+            <div class="nc-meta"><span class="nc-cat c-part">Проект</span><span>2019</span></div>
+            <h3 class="nc-title">Запуск голосования жителей Зеленограда на интерактивной карте города</h3>
+            <p style="font-size:12px;color:var(--mute)">Ежегодный опрос лучших дворников по адресу zelao.ermasoft.ru:8105.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ О КОМПАНИИ ══════════ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="fi">
+        <div class="sec-lbl">О компании</div>
+        <h2 class="sec-h2">Более 20 лет<br><em>научных разработок</em></h2>
+        <div class="about-txt">
+          <p><strong>ЭРМА СОФТ Менеджмент</strong> — стабильная российская компания, разработчик программно-информационного обеспечения с использованием геоинформационных технологий.</p>
+          <p>Научный потенциал, приобретённый в результате ведения и исполнения <strong>инновационных работ в области ГИС и технологий</strong>, обобщённый в диссертациях, научных трудах, практических разработках, позволил создать высокотехнологичные продукты с устойчивыми конкурентными позициями на российском рынке.</p>
+          <p>Компания является <strong>базовым предприятием кафедры «Системная интеграция и менеджмент» МФТИ</strong> и кафедры «Кибернетика» МИФИ. ООО «ЭРМА СОФТ» осуществляет внедрение, техническую поддержку и сопровождение в соответствии с заключёнными договорами.</p>
+          <p style="margin-top:12px;padding:14px 16px;background:var(--cool);border-radius:var(--rl);border-left:3px solid var(--brand)"><strong>Генеральный директор и научный руководитель:</strong> Судейкин Михаил Иванович — к.т.н., доцент кафедры «Физико-технической информатики» МФТИ, член-корреспондент РАЕН.</p>
+        </div>
+        <div class="about-creds">
+          <div class="cred"><div class="cred-n">2002</div><div class="cred-l">Год основания. Более 20 лет непрерывной разработки ГИС-продуктов</div></div>
+          <div class="cred"><div class="cred-n">3</div><div class="cred-l">Продукта в Едином реестре российского ПО Минцифры РФ</div></div>
+          <div class="cred"><div class="cred-n">МФТИ</div><div class="cred-l">Базовое предприятие кафедры «Системная интеграция и менеджмент»</div></div>
+          <div class="cred"><div class="cred-n">РАЕН</div><div class="cred-l">Генеральный директор — к.т.н., доцент МФТИ, член-корреспондент РАЕН</div></div>
+        </div>
+
+        <!-- Реквизиты -->
+        <div style="margin-top:32px;background:var(--white);border:1px solid var(--line);border-radius:var(--rl);padding:22px 24px">
+          <div style="font-size:12px;font-weight:800;color:var(--brand);letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px">Реквизиты</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;font-size:13px;color:var(--mute)">
+            <div><div style="font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Полное наименование</div>ООО «ЭРМА СОФТ Менеджмент»</div>
+            <div><div style="font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Телефон</div><a href="tel:+74959680280" style="color:var(--brand)">+7 (495) 968-02-80</a></div>
+            <div><div style="font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Email</div><a href="mailto:erma@ermasoft.ru" style="color:var(--brand)">erma@ermasoft.ru</a></div>
+            <div><div style="font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Лицензия</div>Роскартографии № РК-10608К</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-img fi d1">
+        <img src="images/about-company.jpg" alt="ГИС-технологии ЭРМА СОФТ — более 20 лет" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ РЕЕСТР ══════════ -->
+<section class="registry" id="registry">
+  <div class="wrap">
+    <div class="reg-lbl">Зарегистрированные программные продукты — Реестр российского ПО Минцифры</div>
+    <div class="reg-grid fi d1">
+      <div class="reg-item">
+        <div class="reg-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13"/></svg></div>
+        <div class="reg-body">
+          <h4>ИГС-Здание</h4>
+          <p>Система управления зданиями, сооружениями и прилегающей территорией</p>
+          <div class="reg-num">Реестр № 27706 · Роспатент № 2021619648 · 21.04.2025</div>
+        </div>
+      </div>
+      <div class="reg-item">
+        <div class="reg-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="reg-body">
+          <h4>СИТИ-Доставка</h4>
+          <p>Базовая специализированная платформа информационно-графической системы</p>
+          <div class="reg-num">Реестр № 21671 · Роспатент № 2015660641 · 07.03.2024</div>
+        </div>
+      </div>
+      <div class="reg-item">
+        <div class="reg-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="reg-body">
+          <h4>ИГС-ГеоАналитика</h4>
+          <p>Система отображения и анализа данных в ситуационных центрах на базе ГИС</p>
+          <div class="reg-num">Роспатент № 2022617984 · 27.04.2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ КАРТОГРАФИЯ ══════════ -->
+<section class="carto" id="cartography">
+  <div class="wrap">
+    <div class="carto-grid">
+      <div class="fi">
+        <div class="sec-lbl">Направление деятельности</div>
+        <h2 class="sec-h2">Картографическое <em>обеспечение</em></h2>
+        <p class="sec-p">Создание специальных цифровых картографических основ (СЦКО) как составной части ГИС-комплексов «ПФС-Геоанализ», «ПФК-Логистика», «СИТИ-Маркет», «СИТИ-Доставка».</p>
+        <p class="sec-p" style="margin-top:12px;font-size:14px">Лицензия Роскартографии № РК-10608К от 30.01.2007 — создание и обновление топографических карт на территории РФ и иностранных государств.</p>
+        <ul class="carto-list">
+          <li class="carto-item"><div class="carto-dot"></div><p><strong>Получение пространственной информации</strong> об объектах и событиях на территории</p></li>
+          <li class="carto-item"><div class="carto-dot"></div><p><strong>Отображение и анализ</strong> событий из различных источников данных</p></li>
+          <li class="carto-item"><div class="carto-dot"></div><p><strong>Планирование маршрутов</strong>, расчёт длины и временного графика передвижения</p></li>
+          <li class="carto-item"><div class="carto-dot"></div><p><strong>Тематические карты</strong> — цветная визуализация результатов анализа территории</p></li>
+          <li class="carto-item"><div class="carto-dot"></div><p><strong>Векторизация</strong> по бумажным источникам, конвертация из форматов DXF, SXF, MIF, SHP</p></li>
+        </ul>
+      </div>
+      <div class="carto-img fi d1">
+        <img src="https://images.unsplash.com/photo-1644088379091-d574269d422f?auto=format&fit=crop&w=1200&q=80" alt="Картография" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="cta" id="contact">
+  <div class="cta-bg"><img src="https://images.unsplash.com/photo-1495542779398-9fec7dc7986c?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy"></div>
+  <div class="cta-ov"></div>
+  <div class="cta-lines"></div>
+  <div class="wrap">
+    <div class="cta-row fi">
+      <div>
+        <h2 class="cta-h2">Готовы обсудить<br><em>ваш проект?</em></h2>
+        <p class="cta-p">Расскажите о задачах вашей организации — подготовим персональную демонстрацию и коммерческое предложение в течение 3 рабочих дней.</p>
+        <div class="cta-btns">
+          <button onclick="openContactModal()" class="btn" style="background:#0E5C8B;color:white;position:relative">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+  Написать нам
+</button>
+          <a href="tel:+74959680280" class="btn btn-white">+7 (495) 968-02-80</a>
+        </div>
+      </div>
+      <div class="cta-card fi d2">
+        <h3>Что включает демо</h3>
+        <ul class="cta-items">
+          <li><span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>Демонстрация нужного продукта</li>
+          <li><span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>ИТ-консалтинг под вашу задачу</li>
+          <li><span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>Коммерческое предложение за 3 дня</li>
+          <li><span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>Тестовый доступ к платформе</li>
+          <li><span class="chk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>Дорожная карта внедрения</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+      <div class="ft-brand">
+        <a href='/' style='display:block;text-decoration:none;margin-bottom:4px'>
+          <img src="images/ermasoft-logo-white.png" alt="ЭРМА СОФТ Менеджмент" style="height:52px;width:auto;display:block">
+        </a>
+        <p class="ft-tag">Стабильная российская компания. Разработчик ГИС-систем для управления территорией с 2002 года. Базовое предприятие МФТИ и МИФИ.</p>
+        <div class="ft-soc">
+          <a href="https://t.me/" target="_blank" rel="noopener" class="soc" aria-label="Telegram"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.89 8.23-1.83 8.63c-.14.63-.5.78-1.02.49l-2.82-2.08-1.36 1.3c-.15.15-.28.27-.57.27l.2-2.88 5.27-4.76c.23-.2-.05-.31-.35-.11L6.87 13.6 4.1 12.74c-.63-.2-.64-.62.13-.92l11.53-4.45c.52-.19.98.12.13.86z"/></svg></a>
+          <a href="https://vk.com/" target="_blank" rel="noopener" class="soc" aria-label="VK"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.785 16.241s.288-.032.435-.193c.135-.148.131-.422.131-.422s-.019-1.295.586-1.488c.595-.19 1.36 1.265 2.17 1.825.612.422 1.079.33 1.079.33l2.16-.03s1.131-.07.594-.96c-.04-.075-.31-.66-1.6-1.86-1.353-1.256-1.171-1.053.456-3.222.99-1.323 1.387-2.13 1.262-2.474-.117-.328-.846-.241-.846-.241l-2.43.015s-.18-.025-.314.055c-.131.078-.215.262-.215.262s-.387 1.025-.9 1.898c-1.085 1.84-1.519 1.938-1.697 1.825-.412-.265-.31-1.066-.31-1.635 0-1.778.27-2.518-.526-2.706-.265-.063-.46-.105-1.137-.111-.866-.01-1.6.003-2.015.207-.276.135-.49.436-.36.453.16.022.523.099.715.36.249.336.24 1.092.24 1.092s.144 2.094-.336 2.355c-.327.18-.776-.187-1.747-1.876-.499-.866-.875-1.823-.875-1.823s-.072-.176-.2-.27c-.155-.114-.373-.15-.373-.15l-2.318.015s-.34.01-.466.158C2.066 7.504 4.05 11.36 6.395 14.4c2.16 2.804 4.605 2.62 6.39 2.5z"/></svg></a>
+          <a href="mailto:erma@ermasoft.ru" class="soc" aria-label="Email"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="ft-col">
+        <h4>Продукты</h4>
+        <ul>
+          <li><a href='/buildings-main'>ИГС-Здание</a></li>
+          <li><a href='/transport-city'>СИТИ-Доставка</a></li>
+          <li><a href='/situation-complex'>ИГС-ГеоАналитика</a></li>
+          <li><a href='/transport-geomonitor'>ГеоМониторинг</a></li>
+          <li><a href='/transport-logistics'>ПФК-Логистика</a></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <h4>Решения</h4>
+        <ul>
+          <li><a href='/transport'>Транспортная логистика</a></li>
+          <li><a href='/municipal'>Муниципальные ГИС</a></li>
+          <li><a href='/situation'>Ситуационные центры</a></li>
+          <li><a href='/cartography'>Картография</a></li>
+          <li><a href='/geoanalysis'>Геоанализ</a></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href='/about-company'>О нас</a></li>
+          <li><a href='/#news'>Актуально</a></li>
+          <li><a href='/about-registry'>Реестр ПО</a></li>
+          <li><a href='/#contact'>Контакты</a></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <h4>Контакты</h4>
+        <div class="ft-ci">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72A12.84 12.84 0 0 0 10.81 6a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:+74959680280">+7 (495) 968-02-80</a>
+        </div>
+        <div class="ft-ci">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:erma@ermasoft.ru">erma@ermasoft.ru</a>
+        </div>
+        <div class="ft-ci">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Москва, Россия</span>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2002–2026 ООО «ЭРМА СОФТ Менеджмент» · Реестр российского ПО · Лицензия Роскартографии № РК-10608К</span>
+      <div class="ft-bot-links">
+        <a href='/about-contacts'>Политика конфиденциальности</a>
+        <a href='/about-contacts'>Карта сайта</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV scroll */
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>18);
+  document.getElementById('btt').classList.toggle('show',window.scrollY>500);
+},{passive:true});
+
+/* Mobile nav - display toggle */
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mobNav');
+if(hbg&&mob){
+  function getMobTop(){const nav=document.getElementById('mainNav');const ub=document.querySelector('.util');return(ub?ub.offsetHeight:38)+(nav?nav.offsetHeight:68);}
+  hbg.addEventListener('click',()=>{
+    const open=mob.style.display==='block';
+    mob.style.display=open?'none':'block';
+    mob.style.top=getMobTop()+'px';
+    hbg.classList.toggle('open',!open);
+  });
+  mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mob.style.display='none';hbg.classList.remove('open');}));
+}
+
+/* Reveal */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.fi:not(.in)').forEach(el=>io.observe(el));
+
+/* Counters */
+function ease(t){return 1-Math.pow(1-t,3)}
+const cio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,to=+el.dataset.to,dur=1300,s=performance.now();
+    (function t(n){const p=Math.min((n-s)/dur,1);el.textContent=Math.round(ease(p)*to);if(p<1)requestAnimationFrame(t);})(s);
+    cio.unobserve(el);
+  });
+},{threshold:.6});
+document.querySelectorAll('.ctr').forEach(el=>cio.observe(el));
+
+/* Active nav highlight */
+const secs=['hero','products','solutions','industries','news','about','contact'];
+window.addEventListener('scroll',()=>{
+  let c='';
+  secs.forEach(id=>{const e=document.getElementById(id);if(e&&window.scrollY>=e.offsetTop-90)c=id;});
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    const h=(a.getAttribute('href')||'').replace('#','');
+    a.classList.toggle('active',h===c);
+  });
+},{passive:true});
+
+/* Video & image fallbacks */
+const vid=document.querySelector('.hero-vid');
+if(vid)vid.addEventListener('error',()=>{document.querySelector('.hero-r').style.background='linear-gradient(135deg,#0A1929,#073F62,#0E5C8B)'});
+document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
+  img.addEventListener('error',()=>{img.style.display='none';if(img.parentElement)img.parentElement.style.background='linear-gradient(135deg,#073F62,#0E5C8B,#2BA8C9)'});
+});
+
+/* Modal functions */
+function openModal(id){
+  document.getElementById('modal-overlay').style.display='block';
+  document.getElementById(id).style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').style.display='none';
+  document.querySelectorAll('.sol-modal').forEach(m=>m.style.display='none');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeContactModal();}});
+
+/* Global contact modal */
+function openContactModal(){
+  document.getElementById('contact-modal-overlay').style.display='block';
+  document.getElementById('contact-modal').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeContactModal(){
+  document.getElementById('contact-modal-overlay').style.display='none';
+  document.getElementById('contact-modal').style.display='none';
+  document.body.style.overflow='';
+}
+function submitContactModal(btn){
+  btn.textContent='✓ Заявка отправлена!';
+  btn.style.background='#27AE60';
+  setTimeout(()=>{
+    closeContactModal();
+    btn.textContent='Отправить заявку';
+    btn.style.background='linear-gradient(135deg,#0E5C8B,#1B8FB0)';
+  },2200);
+}
+
+/* Email popup */
+function showEmailPopup(btn){
+  // Remove existing popup if any
+  const old=document.getElementById('email-popup');
+  if(old){old.remove();return;}
+  const popup=document.createElement('div');
+  popup.id='email-popup';
+  popup.style.cssText='position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:white;border:1px solid #E4EAF0;border-radius:12px;padding:16px 20px;box-shadow:0 8px 32px rgba(10,25,41,.18);white-space:nowrap;z-index:100;min-width:220px;text-align:center';
+  popup.innerHTML=`
+    <div style="font-size:11px;font-weight:800;color:#5B6B7E;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">Электронная почта</div>
+    <a href="mailto:erma@ermasoft.ru" style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;color:#0E5C8B;text-decoration:none">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E5C8B" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      erma@ermasoft.ru
+    </a>
+    <div style="margin-top:10px;font-size:11px;color:#8A98A8">Нажмите чтобы открыть почту</div>`;
+  btn.style.position='relative';
+  btn.appendChild(popup);
+  // Close on outside click
+  setTimeout(()=>document.addEventListener('click',function close(e){if(!popup.contains(e.target)&&e.target!==btn){popup.remove();document.removeEventListener('click',close);}},true),10);
+}
+
+/* ── LIGHTBOX for screenshots ── */
+function initLightbox(){
+  document.querySelectorAll('.cs-img img').forEach(img=>{
+    img.style.cursor='zoom-in';
+    img.addEventListener('click',function(){
+      const ov=document.createElement('div');
+      ov.className='lb-overlay';
+      const i=document.createElement('img');
+      i.className='lb-img';i.src=this.src;
+      const cls=document.createElement('button');
+      cls.className='lb-close';cls.innerHTML='&times;';
+      cls.onclick=()=>ov.remove();
+      ov.appendChild(i);ov.appendChild(cls);
+      document.body.appendChild(ov);
+      ov.addEventListener('click',e=>{if(e.target===ov)ov.remove()});
+      document.addEventListener('keydown',function k(e){if(e.key==='Escape'){ov.remove();document.removeEventListener('keydown',k)}});
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', initLightbox);
+
+</script>
+</body>
+</html>
