@@ -62,20 +62,20 @@
 <div id="footer-placeholder"></div>
 <script src="nav.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {{
+document.addEventListener('DOMContentLoaded', function() {
   // Auto-activate the correct sidebar link
-  var page = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sb-link').forEach(function(l) {{
+  var page = window.location.pathname.split('/').pop().replace(/\.html$/, '');
+  document.querySelectorAll('.sb-link').forEach(function(l) {
     var href = l.getAttribute('href') || '';
-    if (href === page || href.split('/').pop() === page) {{
+    if (href === page || href.split('/').pop() === page) {
       l.classList.add('active');
-    }}
-  }});
-  if (!document.querySelector('.sb-link.active')) {{
+    }
+  });
+  if (!document.querySelector('.sb-link.active')) {
     var first = document.querySelector('.sb-link');
     if (first) first.classList.add('active');
-  }}
-}});
+  }
+});
 </script>
 </body>
 </html>

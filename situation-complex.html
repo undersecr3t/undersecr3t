@@ -42,7 +42,7 @@
       <button type="button" onclick="openContactModal()" class="btn btn-primary" style="width:100%;justify-content:center;font-size:12px;padding:8px;display:flex">Написать нам</button>
     </div></nav></aside>
       <main class="content">
-<section class="content-section fi" id="main"><h2 class="cs-h2">Комплексная автоматизация</h2><p class="cs-p">Компоненты и библиотеки функций в составе <strong>ПФС-Геоанализ</strong> позволяют строить территориально-распределённые системы, обеспечивающие поддержку единого геоинформационного пространства.</p><p class="cs-p">ПФС-Геоанализ реализована в двух вариантах:</p><div class="feat-list"><div class="feat-item"><div class="feat-dot"></div><p><strong>«Толстый» клиент</strong> — расширенные возможности по вводу и редактированию данных</p></div><div class="feat-item"><div class="feat-dot"></div><p><strong>«Тонкий» клиент</strong> — доступ к картографической информации через Internet-браузеры без установки ПО</p></div></div><h3 class="cs-h3">Единое геоинформационное пространство — функциональные блоки:</h3><div class="feat-list"><div class="feat-item"><div class="feat-dot"></div><p>Визуализация данных на картографической основе</p></div><div class="feat-item"><div class="feat-dot"></div><p>Ввод и редактирование данных</p></div><div class="feat-item"><div class="feat-dot"></div><p>Обновление данных из внешних источников</p></div><div class="feat-item"><div class="feat-dot"></div><p>Информационно-справочный режим</p></div><div class="feat-item"><div class="feat-dot"></div><p>Пространственный анализ данных</p></div><div class="feat-item"><div class="feat-dot"></div><p>Создание отчётов</p></div><div class="feat-item"><div class="feat-dot"></div><p>Сценарии визуализации</p></div><div class="feat-item"><div class="feat-dot"></div><p>Администрирование системы</p></div></div><div class="tech-block"><h4>Ключевые функции</h4><div class="tech-tags"><span class="tech-tag">ИГС-ГеоАналитика</span><span class="tech-tag">Роспатент № 2022617984</span><span class="tech-tag">.NET Core 6</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">PostGIS</span><span class="tech-tag">Ситуационный центр</span></div></div></section>
+<section class="content-section fi" id="main"><h2 class="cs-h2">Комплексная автоматизация</h2><p class="cs-p">Компоненты и библиотеки функций в составе <strong>ПФС-Геоанализ</strong> позволяют строить территориально-распределённые системы, обеспечивающие поддержку единого геоинформационного пространства.</p><p class="cs-p">ПФС-Геоанализ реализована в двух вариантах:</p><div class="feat-list"><div class="feat-item"><div class="feat-dot"></div><p><strong>«Толстый» клиент</strong> — расширенные возможности по вводу и редактированию данных</p></div><div class="feat-item"><div class="feat-dot"></div><p><strong>«Тонкий» клиент</strong> — доступ к картографической информации через Internet-браузеры без установки ПО</p></div></div><h3 class="cs-h3">Единое геоинформационное пространство — функциональные блоки:</h3><div class="feat-list"><div class="feat-item"><div class="feat-dot"></div><p>Визуализация данных на картографической основе</p></div><div class="feat-item"><div class="feat-dot"></div><p>Ввод и редактирование данных</p></div><div class="feat-item"><div class="feat-dot"></div><p>Обновление данных из внешних источников</p></div><div class="feat-item"><div class="feat-dot"></div><p>Информационно-справочный режим</p></div><div class="feat-item"><div class="feat-dot"></div><p>Пространственный анализ данных</p></div><div class="feat-item"><div class="feat-dot"></div><p>Создание отчётов</p></div><div class="feat-item"><div class="feat-dot"></div><p>Сценарии визуализации</p></div><div class="feat-item"><div class="feat-dot"></div><p>Администрирование системы</p></div></div><div class="tech-block"><h4>Ключевые функции</h4><div class="tech-tags"><span class="tech-tag">ПФС-Геоанализ</span><span class="tech-tag">Роспатент № 2022617984</span><span class="tech-tag">.NET Core 6</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">PostGIS</span><span class="tech-tag">Ситуационный центр</span></div></div></section>
         <div class="content-cta fi">
           <div><h3>Вопрос специалисту ЭРМА СОФТ</h3>
           <p>Расскажите о задаче — подготовим демонстрацию и предложение за 3 рабочих дня</p></div>
@@ -59,20 +59,20 @@
 <div id="footer-placeholder"></div>
 <script src="nav.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {{
+document.addEventListener('DOMContentLoaded', function() {
   // Auto-activate the correct sidebar link
-  var page = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sb-link').forEach(function(l) {{
+  var page = window.location.pathname.split('/').pop().replace(/\.html$/, '');
+  document.querySelectorAll('.sb-link').forEach(function(l) {
     var href = l.getAttribute('href') || '';
-    if (href === page || href.split('/').pop() === page) {{
+    if (href === page || href.split('/').pop() === page) {
       l.classList.add('active');
-    }}
-  }});
-  if (!document.querySelector('.sb-link.active')) {{
+    }
+  });
+  if (!document.querySelector('.sb-link.active')) {
     var first = document.querySelector('.sb-link');
     if (first) first.classList.add('active');
-  }}
-}});
+  }
+});
 </script>
 </body>
 </html>

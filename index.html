@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ЭРМА СОФТ Менеджмент — ГИС-системы управления территорией</title>
-<meta name="description" content="ЭРМА СОФТ — стабильная российская компания, разработчик программно-информационного обеспечения с использованием геоинформационных технологий. СИТИ-Доставка, ИГС-Здание, ИГС-ГеоАналитика, Муниципальные ГИС.">
+<meta name="description" content="ЭРМА СОФТ — стабильная российская компания, разработчик программно-информационного обеспечения с использованием геоинформационных технологий. СИТИ-Доставка, ИГС-Здание, ПФС-Геоанализ, Муниципальные ГИС.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
@@ -438,7 +438,7 @@ footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,
       <a href="#contact">Контакты</a>
     </div>
     <div class="util-r">
-      <a href="tel:+74959680280">Пн–Пт 9:00–18:00 МСК</a>
+      <span>Пн–Пт 9:00–18:00 МСК</span>
     </div>
   </div>
 </div>
@@ -553,6 +553,7 @@ footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,
 
 <!-- Mobile nav -->
 <div class="mob-nav" id="mobNav" style="display:none">
+  <a href='/geoanalysis'>Геоанализ</a>
   <a href='/buildings'>ГИС «Здания/территория»</a>
   <a href='/municipal'>Муниципальные ГИС</a>
   <a href='/transport'>Транспортная логистика</a>
@@ -1107,7 +1108,7 @@ footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,
           <div class="nc-img nc-img-s"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Ситуационный центр" loading="lazy"></div>
           <div class="nc-body">
             <div class="nc-meta"><span class="nc-cat c-upd">Роспатент</span><span>2022</span></div>
-            <h3 class="nc-title">Зарегистрирована ИГС-ГеоАналитика для ситуационных центров</h3>
+            <h3 class="nc-title">Зарегистрирована ПФС-Геоанализ для ситуационных центров</h3>
             <p style="font-size:12px;color:var(--mute)">Свидетельство Роспатента № 2022617984. Система поддерживает мониторинг событий и нештатных ситуаций.</p>
           </div>
         </a>
@@ -1194,7 +1195,7 @@ footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,
       <div class="reg-item">
         <div class="reg-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <div class="reg-body">
-          <h4>ИГС-ГеоАналитика</h4>
+          <h4>ПФС-Геоанализ</h4>
           <p>Система отображения и анализа данных в ситуационных центрах на базе ГИС</p>
           <div class="reg-num">Роспатент № 2022617984 · 27.04.2022</div>
         </div>
@@ -1280,7 +1281,7 @@ footer{background:var(--navy);padding:64px 0 26px;font-size:13px;color:rgba(255,
         <ul>
           <li><a href='/buildings-main'>ИГС-Здание</a></li>
           <li><a href='/transport-city'>СИТИ-Доставка</a></li>
-          <li><a href='/situation-complex'>ИГС-ГеоАналитика</a></li>
+          <li><a href='/situation-complex'>ПФС-Геоанализ</a></li>
           <li><a href='/transport-geomonitor'>ГеоМониторинг</a></li>
           <li><a href='/transport-logistics'>ПФК-Логистика</a></li>
         </ul>
@@ -1378,7 +1379,7 @@ window.addEventListener('scroll',()=>{
   let c='';
   secs.forEach(id=>{const e=document.getElementById(id);if(e&&window.scrollY>=e.offsetTop-90)c=id;});
   document.querySelectorAll('.nav-link').forEach(a=>{
-    const h=(a.getAttribute('href')||'').replace('#','');
+    const h=(a.getAttribute('href')||'').replace(/^\//,'').replace('#','');
     a.classList.toggle('active',h===c);
   });
 },{passive:true});
@@ -1423,48 +1424,6 @@ function submitContactModal(btn){
     btn.style.background='linear-gradient(135deg,#0E5C8B,#1B8FB0)';
   },2200);
 }
-
-/* Email popup */
-function showEmailPopup(btn){
-  // Remove existing popup if any
-  const old=document.getElementById('email-popup');
-  if(old){old.remove();return;}
-  const popup=document.createElement('div');
-  popup.id='email-popup';
-  popup.style.cssText='position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:white;border:1px solid #E4EAF0;border-radius:12px;padding:16px 20px;box-shadow:0 8px 32px rgba(10,25,41,.18);white-space:nowrap;z-index:100;min-width:220px;text-align:center';
-  popup.innerHTML=`
-    <div style="font-size:11px;font-weight:800;color:#5B6B7E;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">Электронная почта</div>
-    <a href="mailto:erma@ermasoft.ru" style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;color:#0E5C8B;text-decoration:none">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E5C8B" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      erma@ermasoft.ru
-    </a>
-    <div style="margin-top:10px;font-size:11px;color:#8A98A8">Нажмите чтобы открыть почту</div>`;
-  btn.style.position='relative';
-  btn.appendChild(popup);
-  // Close on outside click
-  setTimeout(()=>document.addEventListener('click',function close(e){if(!popup.contains(e.target)&&e.target!==btn){popup.remove();document.removeEventListener('click',close);}},true),10);
-}
-
-/* ── LIGHTBOX for screenshots ── */
-function initLightbox(){
-  document.querySelectorAll('.cs-img img').forEach(img=>{
-    img.style.cursor='zoom-in';
-    img.addEventListener('click',function(){
-      const ov=document.createElement('div');
-      ov.className='lb-overlay';
-      const i=document.createElement('img');
-      i.className='lb-img';i.src=this.src;
-      const cls=document.createElement('button');
-      cls.className='lb-close';cls.innerHTML='&times;';
-      cls.onclick=()=>ov.remove();
-      ov.appendChild(i);ov.appendChild(cls);
-      document.body.appendChild(ov);
-      ov.addEventListener('click',e=>{if(e.target===ov)ov.remove()});
-      document.addEventListener('keydown',function k(e){if(e.key==='Escape'){ov.remove();document.removeEventListener('keydown',k)}});
-    });
-  });
-}
-document.addEventListener('DOMContentLoaded', initLightbox);
 
 </script>
 </body>
